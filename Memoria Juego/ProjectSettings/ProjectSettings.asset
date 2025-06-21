@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: 16bce6ac7798e504c947c9a89539b16c
+  productGUID: d9788a36f8ea9ae40bac7a9286b009a4
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: MemoriaJuego
+  productName: Memoria Juego
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -609,14 +609,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: MemoriaJuego
+  metroPackageName: Memoria Juego
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: MemoriaJuego
+  metroApplicationDescription: Memoria Juego
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -687,10 +687,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: bef87dcf-c5a1-4ebb-94d1-7a07944b1a1f
+  cloudProjectId: ebce6fef-c53b-471d-a1a6-83294c4ca03c
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: MemoriaJuego
+  projectName: Memoria Juego
   organizationId: katthon2
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
