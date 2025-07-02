@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 731642eb53d5d7b43b376648e2b6f6d9
+guid: 5c61e7a3e26fb03469d22e55778326b7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4906853587724163863
-    second: hexagono_0
+      213: 6575898021045532436
+    second: CuadradoCarta_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hexagono_0
+      name: CuadradoCarta_0
       rect:
         serializedVersion: 2
-        x: 26
-        y: 0
-        width: 348
-        height: 400
+        x: 77
+        y: 77
+        width: 358
+        height: 358
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 71b56252755a81440800000000000000
-      internalID: 4906853587724163863
+      spriteID: 417fc97d868424b50800000000000000
+      internalID: 6575898021045532436
       vertices: []
       indices: 
       edges: []
