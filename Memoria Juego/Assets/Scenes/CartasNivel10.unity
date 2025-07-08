@@ -303,14 +303,18 @@ MonoBehaviour:
   cardPrefab: {fileID: 2043704529116806082, guid: db4755abd86c08244a726397f9c7a8fa, type: 3}
   gridTransform: {fileID: 1919944651}
   spritePairsData:
-  - spriteA: {fileID: -487472808, guid: 126db384c5b08fa4ab5b99c0f2710090, type: 3}
-    spriteB: {fileID: -1625657537, guid: 126db384c5b08fa4ab5b99c0f2710090, type: 3}
-  - spriteA: {fileID: -2097698862, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-    spriteB: {fileID: 2127234951, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-  - spriteA: {fileID: 292886052, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-    spriteB: {fileID: 318026511, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-  - spriteA: {fileID: -974884492, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-    spriteB: {fileID: 622385357, guid: 126db384c5b08fa4ab5b99c0f2710090, type: 3}
+  - spriteA: {fileID: -4974717406940055598, guid: d80f9818690ce344abf59ac9bf1e8361, type: 3}
+    spriteB: {fileID: -4574848169579799857, guid: 94d37be317257c04092e761440606fc2, type: 3}
+  - spriteA: {fileID: 6095408203543903260, guid: 8352e05721c750d4e8d683a93de74c0a, type: 3}
+    spriteB: {fileID: 1596060280792314727, guid: d827c075078a9c14194f65c9f641f4c9, type: 3}
+  - spriteA: {fileID: -8936332244527558761, guid: d27c12477b7346546a4227c93d5b28ac, type: 3}
+    spriteB: {fileID: 1845484151895391731, guid: 6ff5ce9338ab39646bf647f7e0142f2b, type: 3}
+  - spriteA: {fileID: -3574529632529226474, guid: b1d5e33917c81824993b745225ad5016, type: 3}
+    spriteB: {fileID: 4188769456520620209, guid: 02396784362d7964a9ac1ffdf493d5ea, type: 3}
+  - spriteA: {fileID: 5984942190468318610, guid: 1c64c08c651e59f49b38fd17709a0654, type: 3}
+    spriteB: {fileID: -8169191417261495888, guid: 24a85538fa417d24cb56f22749af19a2, type: 3}
+  - spriteA: {fileID: -3732002218159088112, guid: d847c8dc7a533e44084993d8c4a57e50, type: 3}
+    spriteB: {fileID: -4613604753705151564, guid: 49d217f15dd73d84d9e7ce4ae5709cc2, type: 3}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0

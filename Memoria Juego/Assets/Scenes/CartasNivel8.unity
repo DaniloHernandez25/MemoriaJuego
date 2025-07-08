@@ -303,18 +303,18 @@ MonoBehaviour:
   cardPrefab: {fileID: 2043704529116806082, guid: db4755abd86c08244a726397f9c7a8fa, type: 3}
   gridTransform: {fileID: 1919944651}
   spritePairsData:
-  - spriteA: {fileID: -487472808, guid: 126db384c5b08fa4ab5b99c0f2710090, type: 3}
-    spriteB: {fileID: -1625657537, guid: 126db384c5b08fa4ab5b99c0f2710090, type: 3}
-  - spriteA: {fileID: -2097698862, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-    spriteB: {fileID: 2127234951, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-  - spriteA: {fileID: 292886052, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-    spriteB: {fileID: 318026511, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-  - spriteA: {fileID: -974884492, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-    spriteB: {fileID: 622385357, guid: 126db384c5b08fa4ab5b99c0f2710090, type: 3}
-  - spriteA: {fileID: -974884492, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-    spriteB: {fileID: 622385357, guid: 126db384c5b08fa4ab5b99c0f2710090, type: 3}
-  - spriteA: {fileID: -974884492, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-    spriteB: {fileID: 622385357, guid: 126db384c5b08fa4ab5b99c0f2710090, type: 3}
+  - spriteA: {fileID: 3430128484137274232, guid: ac5b57ed3519b8f47b482a5d2fe5c1ca, type: 3}
+    spriteB: {fileID: 6324807251867858724, guid: 550cfdb2901bb2b47bde57d79c2d11d7, type: 3}
+  - spriteA: {fileID: -8610233687819175777, guid: 646e815d9b691b64b896d48e0afacfda, type: 3}
+    spriteB: {fileID: 5784247213188449259, guid: f10eafb8f7d6ddf41aaa7f0882a3e11e, type: 3}
+  - spriteA: {fileID: 7564666141806152379, guid: 1dca58992912cb04790d237c7303f95a, type: 3}
+    spriteB: {fileID: 9202629945175120106, guid: ac2c344d145710841a8249edb65ab607, type: 3}
+  - spriteA: {fileID: 6900542514255930352, guid: 177b3d72f242c7d4ebc9ebe8085ec037, type: 3}
+    spriteB: {fileID: 2102646988880147946, guid: 246a88228f61f4242b3f448d55daf31f, type: 3}
+  - spriteA: {fileID: 2769770878130010398, guid: 85993f8262e9abb4fa8c141cfdb1f300, type: 3}
+    spriteB: {fileID: -8566384121405376876, guid: efaea44b513591a40a11af44a0acf68f, type: 3}
+  - spriteA: {fileID: 653714375, guid: a619876a6f61e6848bcbf99bb6558279, type: 3}
+    spriteB: {fileID: -904737328, guid: a619876a6f61e6848bcbf99bb6558279, type: 3}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0

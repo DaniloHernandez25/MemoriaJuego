@@ -101,7 +101,14 @@ public class CardsControllerHard : MonoBehaviour
                     .ChainCallback(() =>
                     {
                         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-                        SceneManager.LoadScene(nextSceneIndex);
+                        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
+                        {
+                            SceneManager.LoadScene(nextSceneIndex);
+                        }
+                        else
+                        {
+                            SceneManager.LoadScene(0); // Opcional: vuelve al menú
+                        }
                     });
             }
         }
@@ -117,9 +124,7 @@ public class CardsControllerHard : MonoBehaviour
         for (int i = spritelist.Count - 1; i > 0; i--)
         {
             int randomIndex = Random.Range(0, i + 1);
-            Sprite temp = spritelist[i];
-            spritelist[i] = spritelist[randomIndex];
-            spritelist[randomIndex] = temp;
+            (spritelist[i], spritelist[randomIndex]) = (spritelist[randomIndex], spritelist[i]); // esta es la forma que Copilot te sugiere
         }
     }
 }

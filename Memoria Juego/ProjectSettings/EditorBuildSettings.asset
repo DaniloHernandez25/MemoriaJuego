@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Main Menu.unity
+    path: Assets/Scenes/MainMenu.unity
     guid: 0ce1db4248fcef6468cd2f78c022240b
+  - enabled: 1
+    path: Assets/Scenes/SelectorCartas.unity
+    guid: f19c55e84c6e02d4fbb8503986892d59
   - enabled: 1
     path: Assets/Scenes/CartasNivel1.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
@@ -28,16 +31,16 @@ EditorBuildSettings:
     guid: 69e3bec0c0085ef40b89a72c4d60906d
   - enabled: 1
     path: Assets/Scenes/CartasNivel7.unity
-    guid: 25616152937a0524d85f0e1e2b71dbc0
+    guid: efb207df16351064e85f6e05189fa6ee
   - enabled: 1
     path: Assets/Scenes/CartasNivel8.unity
-    guid: a5e5fa304cdfef24e90b757d8ffb35b6
+    guid: 095a044e7543673428490f1b8c62966d
   - enabled: 1
     path: Assets/Scenes/CartasNivel9.unity
-    guid: b10759ec8b8d04c4d8fc324289da7c99
+    guid: 8afd22b3939ab254bb93d82d3a77a5ff
   - enabled: 1
     path: Assets/Scenes/CartasNivel10.unity
-    guid: 300c225b40321c44a997d3f92f48646c
+    guid: 0aa6f415d37a4cc48bc6f7ad98fba549
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

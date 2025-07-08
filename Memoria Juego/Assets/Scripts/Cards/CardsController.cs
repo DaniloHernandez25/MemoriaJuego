@@ -82,8 +82,16 @@ public class CardsController : MonoBehaviour
                     .ChainCallback(() =>
                     {
                         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-                        SceneManager.LoadScene(nextSceneIndex);
+                        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
+                        {
+                            SceneManager.LoadScene(nextSceneIndex);
+                        }
+                        else
+                        {
+                            SceneManager.LoadScene("MainMenu"); // Cambia "MenuPrincipal" por el nombre real de tu escena
+                        }
                     });
+
             }
 
     
@@ -107,15 +115,5 @@ public class CardsController : MonoBehaviour
             spritelist[i] = spritelist[randomIndex];
             spritelist[randomIndex] = temp;
         }
-    }
-
-    internal void SetSelected(CardHard cardHard)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public static implicit operator CardsController(CardsControllerHard v)
-    {
-        throw new System.NotImplementedException();
     }
 }
