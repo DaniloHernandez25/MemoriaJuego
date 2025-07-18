@@ -1,18 +1,49 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LoadNextScene : MonoBehaviour
 {
-    public void LoadNext()
+    [SerializeField] private int sceneIndexToLoad = -1;
+    [SerializeField] public bool canLoad = false;
+
+    [Header("GameObjects de imagen completa")]
+    [SerializeField] private GameObject imagenDesbloqueado;
+    [SerializeField] private GameObject imagenBloqueado;
+    [SerializeField] private bool ignorarProgreso = false;
+
+    private Button button;
+
+    private void Start()
     {
-        // Carga la siguiente escena según el índice en Build Settings
-        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        SceneManager.LoadScene(nextSceneIndex);
+        button = GetComponent<Button>();
+
+        if (ignorarProgreso || (LevelProgress.Instance != null && LevelProgress.Instance.EstaDesbloqueado(sceneIndexToLoad)))
+        {
+            canLoad = true;
+            button.interactable = true;
+
+            if (imagenDesbloqueado != null) imagenDesbloqueado.SetActive(true);
+            if (imagenBloqueado != null) imagenBloqueado.SetActive(false);
+        }
+        else
+        {
+            canLoad = false;
+            button.interactable = false;
+
+            if (imagenDesbloqueado != null) imagenDesbloqueado.SetActive(false);
+            if (imagenBloqueado != null) imagenBloqueado.SetActive(true);
+        }
     }
 
-    // Opcional: Si quieres cargar por nombre, usa esto en lugar de LoadNext:
-    // public void LoadSceneByName(string sceneName)
-    // {
-    //     SceneManager.LoadScene(sceneName);
-    // }
+
+    public void LoadNext()
+    {
+        if (!canLoad) return;
+
+        if (sceneIndexToLoad >= 0)
+        {
+            SceneManager.LoadScene(sceneIndexToLoad);
+        }
+    }
 }

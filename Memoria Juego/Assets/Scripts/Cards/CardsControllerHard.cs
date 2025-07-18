@@ -16,6 +16,7 @@ public class CardsControllerHard : MonoBehaviour
     [SerializeField] Transform gridTransform;
 
     [SerializeField] private List<SpritePair> spritePairsData;
+    [SerializeField] GameObject nivelCompletadoPrefab;
 
     private List<Sprite> spritePool;
     private Dictionary<Sprite, Sprite> matchMap;
@@ -100,15 +101,9 @@ public class CardsControllerHard : MonoBehaviour
                     .ChainDelay(0.3f)
                     .ChainCallback(() =>
                     {
-                        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-                        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
-                        {
-                            SceneManager.LoadScene(nextSceneIndex);
-                        }
-                        else
-                        {
-                            SceneManager.LoadScene(0); // Opcional: vuelve al menú
-                        }
+                        LevelProgress.Instance.DesbloquearNivel(SceneManager.GetActiveScene().buildIndex + 1);
+                        //SceneManager.LoadScene(1); // <- la comentas o eliminas
+                        Instantiate(nivelCompletadoPrefab, GameObject.Find("Canvas").transform);  
                     });
             }
         }

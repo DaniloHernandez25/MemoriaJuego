@@ -9,6 +9,7 @@ public class CardsController : MonoBehaviour
     [SerializeField] Card cardPrefab;
     [SerializeField] Transform gridTransform;
     [SerializeField] Sprite[] sprites;
+    [SerializeField] GameObject nivelCompletadoPrefab;
 
     private List<Sprite> spritePairs;
 
@@ -34,7 +35,8 @@ public class CardsController : MonoBehaviour
         }
         ShuffleSprites(spritePairs);
     }
-    void CreateCards() {
+    void CreateCards()
+    {
         {
             for (int i = 0; i < spritePairs.Count; i++)
             {
@@ -81,20 +83,12 @@ public class CardsController : MonoBehaviour
                     .ChainDelay(0.3f) // Pequeña pausa si deseas un efecto más limpio
                     .ChainCallback(() =>
                     {
-                        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-                        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
-                        {
-                            SceneManager.LoadScene(nextSceneIndex);
-                        }
-                        else
-                        {
-                            SceneManager.LoadScene("MainMenu"); // Cambia "MenuPrincipal" por el nombre real de tu escena
-                        }
+                        LevelProgress.Instance.DesbloquearNivel(SceneManager.GetActiveScene().buildIndex + 1);
+                        //SceneManager.LoadScene(1); // <- la comentas o eliminas
+                        Instantiate(nivelCompletadoPrefab, GameObject.Find("Canvas").transform);                        
                     });
 
             }
-
-    
         }
         else
         {
@@ -116,4 +110,16 @@ public class CardsController : MonoBehaviour
             spritelist[randomIndex] = temp;
         }
     }
+    void CompletarNivelActual()
+    {
+        int nivelActual = SceneManager.GetActiveScene().buildIndex;
+        int nivelAlcanzado = PlayerPrefs.GetInt("NivelAlcanzado", 2); // por defecto Nivel 1 (buildIndex 2)
+
+        if (nivelAlcanzado < nivelActual + 1)
+        {
+            PlayerPrefs.SetInt("NivelAlcanzado", nivelActual + 1);
+            PlayerPrefs.Save();
+        }
+    }
+
 }
