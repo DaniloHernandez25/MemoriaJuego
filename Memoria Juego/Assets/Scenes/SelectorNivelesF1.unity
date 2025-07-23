@@ -206,8 +206,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 49804035}
-        m_TargetAssemblyTypeName: LoadNextScene, Assembly-CSharp
-        m_MethodName: LoadNext
+        m_TargetAssemblyTypeName: LoadNextSceneConPref, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -264,14 +264,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 49804030}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1739448f68308a64481b4543f67e0f87, type: 3}
+  m_Script: {fileID: 11500000, guid: b1981afab1d4871479ef4f66b87cb1f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndexToLoad: 10
-  canLoad: 0
-  imagenDesbloqueado: {fileID: 1642584116}
-  imagenBloqueado: {fileID: 167334261}
-  ignorarProgreso: 0
+  nivelIndex: 14
+  escenaDestino: 14
 --- !u!1 &77716833
 GameObject:
   m_ObjectHideFlags: 0
@@ -720,8 +717,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 108173339}
-        m_TargetAssemblyTypeName: LoadNextScene, Assembly-CSharp
-        m_MethodName: LoadNext
+        m_TargetAssemblyTypeName: LoadNextSceneConPref, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -778,14 +775,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 108173334}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1739448f68308a64481b4543f67e0f87, type: 3}
+  m_Script: {fileID: 11500000, guid: b1981afab1d4871479ef4f66b87cb1f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndexToLoad: 3
-  canLoad: 0
-  imagenDesbloqueado: {fileID: 1318223967}
-  imagenBloqueado: {fileID: 342406888}
-  ignorarProgreso: 0
+  nivelIndex: 7
+  escenaDestino: 7
 --- !u!1 &125111422
 GameObject:
   m_ObjectHideFlags: 0
@@ -1061,8 +1055,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 222769355}
-        m_TargetAssemblyTypeName: LoadNextScene, Assembly-CSharp
-        m_MethodName: LoadNext
+        m_TargetAssemblyTypeName: LoadNextSceneConPref, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1119,14 +1113,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 222769350}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1739448f68308a64481b4543f67e0f87, type: 3}
+  m_Script: {fileID: 11500000, guid: b1981afab1d4871479ef4f66b87cb1f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndexToLoad: 8
-  canLoad: 0
-  imagenDesbloqueado: {fileID: 2022059126}
-  imagenBloqueado: {fileID: 431827651}
-  ignorarProgreso: 0
+  nivelIndex: 12
+  escenaDestino: 12
 --- !u!1 &312067394
 GameObject:
   m_ObjectHideFlags: 0
@@ -1214,8 +1205,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 312067399}
-        m_TargetAssemblyTypeName: LoadNextScene, Assembly-CSharp
-        m_MethodName: LoadNext
+        m_TargetAssemblyTypeName: LoadNextSceneConPref, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1272,14 +1263,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 312067394}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1739448f68308a64481b4543f67e0f87, type: 3}
+  m_Script: {fileID: 11500000, guid: b1981afab1d4871479ef4f66b87cb1f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndexToLoad: 7
-  canLoad: 0
-  imagenDesbloqueado: {fileID: 1538635742}
-  imagenBloqueado: {fileID: 1588062209}
-  ignorarProgreso: 0
+  nivelIndex: 11
+  escenaDestino: 11
 --- !u!1 &342406888
 GameObject:
   m_ObjectHideFlags: 0
@@ -1999,7 +1987,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1739448f68308a64481b4543f67e0f87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndexToLoad: 0
+  sceneIndexToLoad: 4
   canLoad: 1
   imagenDesbloqueado: {fileID: 0}
   imagenBloqueado: {fileID: 0}
@@ -2365,6 +2353,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 838784105}
   m_CullTransparentMesh: 1
+--- !u!1 &844463073
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 844463075}
+  - component: {fileID: 844463076}
+  m_Layer: 0
+  m_Name: LevelSelectorManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &844463075
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844463073}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 959.9955, y: 540.0005, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &844463076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844463073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09370d1f6791e1f48bc7463683580fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  botonesDeNivel:
+  - {fileID: 998422830}
+  - {fileID: 108173336}
+  - {fileID: 1360674547}
+  - {fileID: 1659837120}
+  - {fileID: 1918669166}
+  - {fileID: 312067396}
+  - {fileID: 222769352}
+  - {fileID: 1857144820}
+  - {fileID: 49804032}
+  - {fileID: 1775614849}
 --- !u!1 &928684239
 GameObject:
   m_ObjectHideFlags: 0
@@ -2527,8 +2570,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 998422833}
-        m_TargetAssemblyTypeName: LoadNextScene, Assembly-CSharp
-        m_MethodName: LoadNext
+        m_TargetAssemblyTypeName: LoadNextSceneConPref, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2585,14 +2628,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 998422828}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1739448f68308a64481b4543f67e0f87, type: 3}
+  m_Script: {fileID: 11500000, guid: b1981afab1d4871479ef4f66b87cb1f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndexToLoad: 2
-  canLoad: 0
-  imagenDesbloqueado: {fileID: 102744991}
-  imagenBloqueado: {fileID: 1441666631}
-  ignorarProgreso: 1
+  nivelIndex: 6
+  escenaDestino: 6
 --- !u!1 &1172416802
 GameObject:
   m_ObjectHideFlags: 0
@@ -3102,8 +3142,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1360674550}
-        m_TargetAssemblyTypeName: LoadNextScene, Assembly-CSharp
-        m_MethodName: LoadNext
+        m_TargetAssemblyTypeName: LoadNextSceneConPref, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3160,14 +3200,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1360674545}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1739448f68308a64481b4543f67e0f87, type: 3}
+  m_Script: {fileID: 11500000, guid: b1981afab1d4871479ef4f66b87cb1f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndexToLoad: 4
-  canLoad: 0
-  imagenDesbloqueado: {fileID: 1172416802}
-  imagenBloqueado: {fileID: 1978580916}
-  ignorarProgreso: 0
+  nivelIndex: 8
+  escenaDestino: 8
 --- !u!1 &1399630040
 GameObject:
   m_ObjectHideFlags: 0
@@ -3591,51 +3628,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1538635742}
   m_CullTransparentMesh: 1
---- !u!1 &1566109405
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1566109407}
-  - component: {fileID: 1566109406}
-  m_Layer: 0
-  m_Name: LevelManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1566109406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1566109405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54268257e688e034f9f34f222e7f0ae0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nivelesDesbloqueados: 02000000
---- !u!4 &1566109407
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1566109405}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 684.82043, y: 911.13336, z: -9.973897}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1588062209
 GameObject:
   m_ObjectHideFlags: 0
@@ -4009,8 +4001,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1659837123}
-        m_TargetAssemblyTypeName: LoadNextScene, Assembly-CSharp
-        m_MethodName: LoadNext
+        m_TargetAssemblyTypeName: LoadNextSceneConPref, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4067,14 +4059,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1659837118}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1739448f68308a64481b4543f67e0f87, type: 3}
+  m_Script: {fileID: 11500000, guid: b1981afab1d4871479ef4f66b87cb1f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndexToLoad: 5
-  canLoad: 0
-  imagenDesbloqueado: {fileID: 1756334111}
-  imagenBloqueado: {fileID: 99972859}
-  ignorarProgreso: 0
+  nivelIndex: 9
+  escenaDestino: 9
 --- !u!1 &1683198826
 GameObject:
   m_ObjectHideFlags: 0
@@ -4452,8 +4441,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1775614852}
-        m_TargetAssemblyTypeName: LoadNextScene, Assembly-CSharp
-        m_MethodName: LoadNext
+        m_TargetAssemblyTypeName: LoadNextSceneConPref, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4510,14 +4499,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1775614847}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1739448f68308a64481b4543f67e0f87, type: 3}
+  m_Script: {fileID: 11500000, guid: b1981afab1d4871479ef4f66b87cb1f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndexToLoad: 11
-  canLoad: 0
-  imagenDesbloqueado: {fileID: 823811379}
-  imagenBloqueado: {fileID: 838784105}
-  ignorarProgreso: 0
+  nivelIndex: 15
+  escenaDestino: 15
 --- !u!1 &1831463115
 GameObject:
   m_ObjectHideFlags: 0
@@ -4741,8 +4727,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1857144823}
-        m_TargetAssemblyTypeName: LoadNextScene, Assembly-CSharp
-        m_MethodName: LoadNext
+        m_TargetAssemblyTypeName: LoadNextSceneConPref, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4799,14 +4785,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1857144818}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1739448f68308a64481b4543f67e0f87, type: 3}
+  m_Script: {fileID: 11500000, guid: b1981afab1d4871479ef4f66b87cb1f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndexToLoad: 9
-  canLoad: 0
-  imagenDesbloqueado: {fileID: 826838935}
-  imagenBloqueado: {fileID: 2060207862}
-  ignorarProgreso: 0
+  nivelIndex: 13
+  escenaDestino: 13
 --- !u!1 &1918669164
 GameObject:
   m_ObjectHideFlags: 0
@@ -4894,8 +4877,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1918669169}
-        m_TargetAssemblyTypeName: LoadNextScene, Assembly-CSharp
-        m_MethodName: LoadNext
+        m_TargetAssemblyTypeName: LoadNextSceneConPref, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4952,14 +4935,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1918669164}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1739448f68308a64481b4543f67e0f87, type: 3}
+  m_Script: {fileID: 11500000, guid: b1981afab1d4871479ef4f66b87cb1f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndexToLoad: 6
-  canLoad: 0
-  imagenDesbloqueado: {fileID: 77716833}
-  imagenBloqueado: {fileID: 488007769}
-  ignorarProgreso: 0
+  nivelIndex: 10
+  escenaDestino: 10
 --- !u!1 &1949184126
 GameObject:
   m_ObjectHideFlags: 0
@@ -5328,4 +5308,4 @@ SceneRoots:
   - {fileID: 1424585762}
   - {fileID: 125111426}
   - {fileID: 1754893941}
-  - {fileID: 1566109407}
+  - {fileID: 844463075}

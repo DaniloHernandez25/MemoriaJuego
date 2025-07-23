@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.Networking;
 
 public class CardsController : MonoBehaviour
 {
@@ -83,10 +83,29 @@ public class CardsController : MonoBehaviour
                     .ChainDelay(0.3f) // Pequeña pausa si deseas un efecto más limpio
                     .ChainCallback(() =>
                     {
-                        LevelProgress.Instance.DesbloquearNivel(SceneManager.GetActiveScene().buildIndex + 1);
-                        //SceneManager.LoadScene(1); // <- la comentas o eliminas
-                        Instantiate(nivelCompletadoPrefab, GameObject.Find("Canvas").transform);                        
+                        if (LevelProgress.Instance != null)
+                        {
+                            LevelProgress.Instance.DesbloquearNivel(SceneManager.GetActiveScene().buildIndex + 1);
+                        }
+                        else
+                        {
+                            Debug.LogWarning("⚠️ LevelProgress.Instance es null");
+                        }
+
+                        GameObject canvas = GameObject.Find("Canvas");
+                        if (canvas != null && nivelCompletadoPrefab != null)
+                        {
+                            Instantiate(nivelCompletadoPrefab, canvas.transform);
+                        }
+                        else
+                        {
+                            if (canvas == null) Debug.LogWarning("⚠️ No se encontró 'Canvas'");
+                            if (nivelCompletadoPrefab == null) Debug.LogWarning("⚠️ nivelCompletadoPrefab no está asignado");
+                        }
+
+                        StartCoroutine(GuardarProgresoEnBD());
                     });
+
 
             }
         }
@@ -121,5 +140,35 @@ public class CardsController : MonoBehaviour
             PlayerPrefs.Save();
         }
     }
+    
+    private IEnumerator GuardarProgresoEnBD()
+    {
+        string nombreJugador = PlayerPrefs.GetString("nombreJugador", "");
+        string fechaSeleccionada = PlayerPrefs.GetString("fechaSeleccionada", "");
 
+        if (string.IsNullOrEmpty(nombreJugador) || string.IsNullOrEmpty(fechaSeleccionada))
+        {
+            Debug.LogWarning("Falta nombre o fecha en PlayerPrefs");
+            yield break;
+        }
+        int nivelesCompletados = SceneManager.GetActiveScene().buildIndex;
+
+        WWWForm form = new WWWForm();
+        form.AddField("nombre", nombreJugador);
+        form.AddField("fecha", fechaSeleccionada);
+        form.AddField("niveles", 1); // para sumar 1 al progreso
+
+
+        UnityWebRequest www = UnityWebRequest.Post("http://localhost/EduardoDragon/guardar_progreso.php", form);
+        yield return www.SendWebRequest();
+
+        if (www.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Error al guardar progreso: " + www.error);
+        }
+        else
+        {
+            Debug.Log("Progreso actualizado correctamente: " + www.downloadHandler.text);
+        }
+    }
 }
