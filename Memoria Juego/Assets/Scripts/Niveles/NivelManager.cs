@@ -3,14 +3,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
+using TMPro;
 
 public class NivelManager : MonoBehaviour
 {
     [System.Serializable]
     public struct LevelButton
     {
-        public Button button;
-        public Image  bgImage;
+        public Button button;          // tu botón
+        public Image bgImage;         // su fondo
+        public TextMeshProUGUI label;  // el TextMeshPro para el número/texto
+        [Tooltip("Texto que se mostrará cuando esté desbloqueado")]
+        public string unlockedText;    // editable en Unity
     }
 
     [Header("Botones y fondos")]
@@ -28,7 +32,7 @@ public class NivelManager : MonoBehaviour
     void Start()
     {
         nombreJugador = PlayerPrefs.GetString("nombreJugador", "");
-        fechaPartida  = PlayerPrefs.GetString("fechaSeleccionada", "");
+        fechaPartida = PlayerPrefs.GetString("fechaSeleccionada", "");
         if (string.IsNullOrEmpty(nombreJugador) || string.IsNullOrEmpty(fechaPartida))
         {
             Debug.LogWarning("⚠️ Falta nombre o fecha en PlayerPrefs");
@@ -41,7 +45,7 @@ public class NivelManager : MonoBehaviour
     {
         var form = new WWWForm();
         form.AddField("nombre", nombreJugador);
-        form.AddField("fecha",  fechaPartida);
+        form.AddField("fecha", fechaPartida);
 
         using var www = UnityWebRequest.Post(
             "http://localhost/EduardoDragon/obtener_niveles.php", form);
@@ -61,8 +65,26 @@ public class NivelManager : MonoBehaviour
         {
             bool ok = i <= MaxNivelesCompletados;
             niveles[i].button.interactable = ok;
-            niveles[i].bgImage.sprite     = ok ? unlockedSprite : lockedSprite;
+            niveles[i].bgImage.sprite = ok ? unlockedSprite : lockedSprite;
             niveles[i].bgImage.SetNativeSize();
+        }
+        for (int i = 0; i < niveles.Length; i++)
+        {
+            bool ok = i <= MaxNivelesCompletados;
+            var lvl = niveles[i];
+
+            // estado de interacción e imagen
+            lvl.button.interactable = ok;
+            lvl.bgImage.sprite = ok ? unlockedSprite : lockedSprite;
+            lvl.bgImage.SetNativeSize();
+
+            // texto: solo activo si está desbloqueado
+            if (lvl.label != null)
+            {
+                lvl.label.gameObject.SetActive(ok);
+                if (ok)
+                    lvl.label.text = lvl.unlockedText;
+            }
         }
     }
 
@@ -78,4 +100,11 @@ public class NivelManager : MonoBehaviour
     {
         public int niveles_completados;
     }
+    void Awake()
+    {
+        foreach (var lvl in niveles)
+            if (lvl.label != null)
+                lvl.label.gameObject.SetActive(false);
+    }
+
 }

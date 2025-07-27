@@ -132,42 +132,61 @@ public class CardsControllerHard : MonoBehaviour
 
     private IEnumerator GuardarProgresoEnBD()
     {
-        // 1) chequear nivel actual vs. lo ya cargado en NivelManager
-        int nivelActual = SceneManager.GetActiveScene().buildIndex;
-        if (nivelActual <= NivelManager.MaxNivelesCompletados)
+    string nombre    = PlayerPrefs.GetString("nombreJugador", "");
+    string fecha     = PlayerPrefs.GetString("fechaSeleccionada", "");
+    int    prefNivel = PlayerPrefs.GetInt("nivelSeleccionado", -1);
+
+    if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(fecha) || prefNivel < 0)
+    {
+        Debug.LogWarning("❌ Faltan datos para guardar progreso");
+        yield break;
+    }
+
+    // 1) Consultar BD
+    var formGet = new WWWForm();
+    formGet.AddField("nombre", nombre);
+    formGet.AddField("fecha",  fecha);
+    using (var reqGet = UnityWebRequest.Post("http://localhost/EduardoDragon/obtener_niveles.php", formGet))
+    {
+        yield return reqGet.SendWebRequest();
+        if (reqGet.result != UnityWebRequest.Result.Success)
         {
-            Debug.Log("🔒 Ya completado según NivelManager. No actualizo BD.");
+            Debug.LogError("❌ Error al obtener niveles: " + reqGet.error);
             yield break;
         }
 
-        // 2) Preparar datos
-        string nombre = PlayerPrefs.GetString("nombreJugador", "");
-        string fecha  = PlayerPrefs.GetString("fechaSeleccionada", "");
-        if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(fecha))
+        var data = JsonUtility.FromJson<NivelData>(reqGet.downloadHandler.text.Trim());
+        Debug.Log($"📦 BD dice niveles_completados = {data.niveles_completados}");
+
+        // 2) Bloqueo si nivelSeleccionado < niveles_completados en BD
+        if (prefNivel < data.niveles_completados)
         {
-            Debug.LogWarning("⚠️ Faltan nombre o fecha en PlayerPrefs");
+            Debug.Log("🔒 El nivel seleccionado es menor al ya almacenado. No actualizo BD.");
             yield break;
         }
+    }
 
-        // 3) Enviar delta=1 al servidor
-        var form = new WWWForm();
-        form.AddField("nombre", nombre);
-        form.AddField("fecha",  fecha);
-        form.AddField("delta",  1); // siempre sumamos 1
+        // 3) Enviar el nuevo valor a la BD (siempre delta = 1)
+        var formSet = new WWWForm();
+        formSet.AddField("nombre", nombre);
+        formSet.AddField("fecha",  fecha);
+        // en lugar de prefNivel, siempre mandamos 1 unidad a sumar:
+        formSet.AddField("delta", 1);
 
-        using var www = UnityWebRequest.Post(
-            "http://localhost/EduardoDragon/actualizar_niveles.php", form);
-        yield return www.SendWebRequest();
-
-        if (www.result == UnityWebRequest.Result.Success)
+        using (var reqSet = UnityWebRequest.Post(
+                "http://localhost/EduardoDragon/actualizar_niveles.php",
+                formSet))
         {
-            Debug.Log("✅ BD incrementada en 1 nivel");
-            // 4) Actualizar el máximo en NivelManager para esta sesión
-            NivelManager.RegistrarNivelCompletado(nivelActual);
-        }
-        else
-        {
-            Debug.LogError("❌ Error guardando progreso: " + www.error);
+            yield return reqSet.SendWebRequest();
+            if (reqSet.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log($"✅ BD incrementada en 1 nivel (ahora debería ser +1)");
+                NivelManager.RegistrarNivelCompletado(prefNivel);
+            }
+            else
+            {
+                Debug.LogError("❌ Error guardando progreso: " + reqSet.error);
+            }
         }
     }
 }

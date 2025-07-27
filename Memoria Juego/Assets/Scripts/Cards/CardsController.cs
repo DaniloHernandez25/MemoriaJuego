@@ -100,8 +100,8 @@ public class CardsController : MonoBehaviour
         }
     }
 
-   private IEnumerator GuardarProgresoEnBD()
-{
+    private IEnumerator GuardarProgresoEnBD()
+    {
     string nombre    = PlayerPrefs.GetString("nombreJugador", "");
     string fecha     = PlayerPrefs.GetString("fechaSeleccionada", "");
     int    prefNivel = PlayerPrefs.GetInt("nivelSeleccionado", -1);

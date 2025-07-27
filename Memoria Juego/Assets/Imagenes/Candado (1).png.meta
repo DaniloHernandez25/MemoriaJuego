@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 600f0140c4721844ea16a3da96f6d63f
+guid: c1ba52cef094696428821a3da3196ef5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5383504967337918363
-    second: Boton gris_0
+      213: -774220985211026701
+    second: Candado (1)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boton gris_0
+      name: Candado (1)_0
       rect:
         serializedVersion: 2
-        x: 270
-        y: 121
-        width: 127
-        height: 133
+        x: 16
+        y: 18
+        width: 160
+        height: 165
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 560c54751c2f945b0800000000000000
-      internalID: -5383504967337918363
+      spriteID: 3f208dead1a6145f0800000000000000
+      internalID: -774220985211026701
       vertices: []
       indices: 
       edges: []
