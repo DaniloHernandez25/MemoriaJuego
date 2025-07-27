@@ -6,7 +6,7 @@ using System.Collections;
 
 public class CrearPartida : MonoBehaviour
 {
-    [SerializeField] private int sceneToLoad = -1; // 
+    [SerializeField] private int sceneToLoad = -1;
 
     public void AlCrearPartida()
     {
@@ -18,28 +18,39 @@ public class CrearPartida : MonoBehaviour
             return;
         }
 
-        // Crea nueva partida con 0 fases y 0 niveles
-        StartCoroutine(EnviarProgreso(nombreJugador, 0, 0));
+        // 🔹 Generar una nueva fecha para esta partida
+        string fechaPartida = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+        // 🔸 Guardar esa fecha en PlayerPrefs
+        PlayerPrefs.SetString("fechaSeleccionada", fechaPartida);
+        PlayerPrefs.Save();
+        Debug.Log("Fecha de partida guardada localmente: " + fechaPartida);
+
+        // Crear nueva partida con 0 niveles
+        StartCoroutine(EnviarProgreso(nombreJugador, fechaPartida, 0));
     }
 
-    private IEnumerator EnviarProgreso(string nombre, int fases, int niveles)
+    private IEnumerator EnviarProgreso(string nombre, string fecha, int niveles)
     {
         WWWForm form = new WWWForm();
         form.AddField("nombre", nombre);
-        form.AddField("fases", fases);
+        form.AddField("fecha",  fecha);
         form.AddField("niveles", niveles);
 
-        UnityWebRequest www = UnityWebRequest.Post("http://localhost/EduardoDragon/guardar_progreso.php", form);
-        yield return www.SendWebRequest();
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/EduardoDragon/crear_partida.php", form))
+        {
+            yield return www.SendWebRequest();
 
-        if (www.result != UnityWebRequest.Result.Success)
-        {
-            Debug.LogError("Error al guardar progreso: " + www.error);
-        }
-        else
-        {
-            Debug.Log("Respuesta del servidor: " + www.downloadHandler.text);
-            SceneManager.LoadScene(sceneToLoad); // Cambia de escena si fue exitoso
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error al guardar progreso: " + www.error);
+            }
+            else
+            {
+                Debug.Log("Respuesta del servidor: " + www.downloadHandler.text);
+                // 👇 Cambiar de escena una vez confirmada la creación
+                SceneManager.LoadScene(sceneToLoad);
+            }
         }
     }
 }

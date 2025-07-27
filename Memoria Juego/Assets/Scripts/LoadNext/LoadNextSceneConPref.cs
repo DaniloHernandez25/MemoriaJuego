@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class LoadNextSceneConPref : MonoBehaviour
 {
-    [SerializeField] private int nivelIndex; // índice del nivel o escena
-    [SerializeField] private int escenaDestino; // índice de la escena a cargar
+    [SerializeField] private int nivelIndex;     // Nivel “dinámico” que quieres guardar
+    [SerializeField] private int escenaDestino;  // Opcional: si quieres cambiar escena
 
     private Button button;
 
@@ -26,11 +26,18 @@ public class LoadNextSceneConPref : MonoBehaviour
             return;
         }
 
+        // Guarda el nivel “dinámico”
         PlayerPrefs.SetInt("nivelSeleccionado", nivelIndex);
         PlayerPrefs.Save();
 
         Debug.Log($"✅ Nivel seleccionado: {nivelIndex}");
-        Debug.Log($"➡️ Cargando escena {escenaDestino}");
-        SceneManager.LoadScene(escenaDestino);
+
+        // Opcional: carga otra escena
+        if (escenaDestino >= 0)
+            SceneManager.LoadScene(escenaDestino);
     }
+    private void OnApplicationQuit() {
+        PlayerPrefs.DeleteKey("nivelSeleccionado");
+    }
+
 }

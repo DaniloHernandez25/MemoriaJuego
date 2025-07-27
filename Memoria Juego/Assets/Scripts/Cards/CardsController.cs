@@ -1,3 +1,4 @@
+// CardsController.cs
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,12 +12,15 @@ public class CardsController : MonoBehaviour
     [SerializeField] Sprite[] sprites;
     [SerializeField] GameObject nivelCompletadoPrefab;
 
+    [System.Serializable]
+    private class NivelData
+    {
+        public int niveles_completados;
+    }
+
     private List<Sprite> spritePairs;
-
-    Card firstSelected;
-    Card secondSelected;
-
-    int matchCounts;
+    private Card firstSelected, secondSelected;
+    private int matchCounts;
 
     private void Start()
     {
@@ -24,47 +28,37 @@ public class CardsController : MonoBehaviour
         CreateCards();
     }
 
-    private void PrepareSprites()
+    void PrepareSprites()
     {
         spritePairs = new List<Sprite>();
-        for (int i = 0; i < sprites.Length; i++)
+        foreach (var s in sprites)
         {
-            //añade sprites 2 veces para que haya pares
-            spritePairs.Add(sprites[i]);
-            spritePairs.Add(sprites[i]);
+            spritePairs.Add(s);
+            spritePairs.Add(s);
         }
         ShuffleSprites(spritePairs);
     }
+
     void CreateCards()
     {
+        foreach (var s in spritePairs)
         {
-            for (int i = 0; i < spritePairs.Count; i++)
-            {
-                Card card = Instantiate(cardPrefab, gridTransform);
-                card.SetIconSprite(spritePairs[i]);
-                card.controller = this;
-            }
+            var card = Instantiate(cardPrefab, gridTransform);
+            card.SetIconSprite(s);
+            card.controller = this;
         }
     }
+
     public void SetSelected(Card card)
     {
-        if (card.isSelected == false)
+        if (card.isSelected) return;
+        card.Show();
+        if (firstSelected == null) { firstSelected = card; return; }
+        if (secondSelected == null)
         {
-            card.Show();
-
-            if (firstSelected == null)
-            {
-                firstSelected = card;
-                return;
-            }
-
-            if (secondSelected == null)
-            {
-                secondSelected = card;
-                StartCoroutine(CheckMatching(firstSelected, secondSelected));
-                firstSelected = null;
-                secondSelected = null;
-            }
+            secondSelected = card;
+            StartCoroutine(CheckMatching(firstSelected, secondSelected));
+            firstSelected = secondSelected = null;
         }
     }
 
@@ -76,99 +70,93 @@ public class CardsController : MonoBehaviour
             matchCounts++;
             if (matchCounts >= spritePairs.Count / 2)
             {
-                // Nivel completado: animación y luego cambio de escena
                 PrimeTween.Sequence.Create()
                     .Chain(PrimeTween.Tween.Scale(gridTransform, Vector3.one * 1.2f, 0.2f, ease: PrimeTween.Ease.OutBack))
-                    .Chain(PrimeTween.Tween.Scale(gridTransform, Vector3.one, 0.2f, ease: PrimeTween.Ease.InOutCubic))
-                    .ChainDelay(0.3f) // Pequeña pausa si deseas un efecto más limpio
+                    .Chain(PrimeTween.Tween.Scale(gridTransform, Vector3.one,      0.2f, ease: PrimeTween.Ease.InOutCubic))
+                    .ChainDelay(0.3f)
                     .ChainCallback(() =>
                     {
-                        if (LevelProgress.Instance != null)
-                        {
-                            LevelProgress.Instance.DesbloquearNivel(SceneManager.GetActiveScene().buildIndex + 1);
-                        }
-                        else
-                        {
-                            Debug.LogWarning("⚠️ LevelProgress.Instance es null");
-                        }
-
-                        GameObject canvas = GameObject.Find("Canvas");
+                        // Mostrar popup
+                        var canvas = GameObject.Find("Canvas");
                         if (canvas != null && nivelCompletadoPrefab != null)
-                        {
                             Instantiate(nivelCompletadoPrefab, canvas.transform);
-                        }
-                        else
-                        {
-                            if (canvas == null) Debug.LogWarning("⚠️ No se encontró 'Canvas'");
-                            if (nivelCompletadoPrefab == null) Debug.LogWarning("⚠️ nivelCompletadoPrefab no está asignado");
-                        }
-
                         StartCoroutine(GuardarProgresoEnBD());
                     });
-
-
             }
         }
         else
         {
-            // Dar vuelta a las cartas
             a.Hide();
             b.Hide();
         }
     }
 
-    void ShuffleSprites(List<Sprite> spritelist)
+    void ShuffleSprites(List<Sprite> list)
     {
-        for (int i = spritelist.Count - 1; i > 0; i--)
+        for (int i = list.Count - 1; i > 0; i--)
         {
-            int randomIndex = Random.Range(0, i + 1);
-
-            // Swap elements at i and randomIndex
-            Sprite temp = spritelist[i];
-            spritelist[i] = spritelist[randomIndex];
-            spritelist[randomIndex] = temp;
+            int j = Random.Range(0, i + 1);
+            (list[i], list[j]) = (list[j], list[i]);
         }
     }
-    void CompletarNivelActual()
-    {
-        int nivelActual = SceneManager.GetActiveScene().buildIndex;
-        int nivelAlcanzado = PlayerPrefs.GetInt("NivelAlcanzado", 2); // por defecto Nivel 1 (buildIndex 2)
 
-        if (nivelAlcanzado < nivelActual + 1)
-        {
-            PlayerPrefs.SetInt("NivelAlcanzado", nivelActual + 1);
-            PlayerPrefs.Save();
-        }
+   private IEnumerator GuardarProgresoEnBD()
+{
+    string nombre    = PlayerPrefs.GetString("nombreJugador", "");
+    string fecha     = PlayerPrefs.GetString("fechaSeleccionada", "");
+    int    prefNivel = PlayerPrefs.GetInt("nivelSeleccionado", -1);
+
+    if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(fecha) || prefNivel < 0)
+    {
+        Debug.LogWarning("❌ Faltan datos para guardar progreso");
+        yield break;
     }
-    
-    private IEnumerator GuardarProgresoEnBD()
-    {
-        string nombreJugador = PlayerPrefs.GetString("nombreJugador", "");
-        string fechaSeleccionada = PlayerPrefs.GetString("fechaSeleccionada", "");
 
-        if (string.IsNullOrEmpty(nombreJugador) || string.IsNullOrEmpty(fechaSeleccionada))
+    // 1) Consultar BD
+    var formGet = new WWWForm();
+    formGet.AddField("nombre", nombre);
+    formGet.AddField("fecha",  fecha);
+    using (var reqGet = UnityWebRequest.Post("http://localhost/EduardoDragon/obtener_niveles.php", formGet))
+    {
+        yield return reqGet.SendWebRequest();
+        if (reqGet.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogWarning("Falta nombre o fecha en PlayerPrefs");
+            Debug.LogError("❌ Error al obtener niveles: " + reqGet.error);
             yield break;
         }
-        int nivelesCompletados = SceneManager.GetActiveScene().buildIndex;
 
-        WWWForm form = new WWWForm();
-        form.AddField("nombre", nombreJugador);
-        form.AddField("fecha", fechaSeleccionada);
-        form.AddField("niveles", 1); // para sumar 1 al progreso
+        var data = JsonUtility.FromJson<NivelData>(reqGet.downloadHandler.text.Trim());
+        Debug.Log($"📦 BD dice niveles_completados = {data.niveles_completados}");
 
-
-        UnityWebRequest www = UnityWebRequest.Post("http://localhost/EduardoDragon/guardar_progreso.php", form);
-        yield return www.SendWebRequest();
-
-        if (www.result != UnityWebRequest.Result.Success)
+        // 2) Bloqueo si nivelSeleccionado < niveles_completados en BD
+        if (prefNivel < data.niveles_completados)
         {
-            Debug.LogError("Error al guardar progreso: " + www.error);
+            Debug.Log("🔒 El nivel seleccionado es menor al ya almacenado. No actualizo BD.");
+            yield break;
         }
-        else
+    }
+
+        // 3) Enviar el nuevo valor a la BD (siempre delta = 1)
+        var formSet = new WWWForm();
+        formSet.AddField("nombre", nombre);
+        formSet.AddField("fecha",  fecha);
+        // en lugar de prefNivel, siempre mandamos 1 unidad a sumar:
+        formSet.AddField("delta", 1);
+
+        using (var reqSet = UnityWebRequest.Post(
+                "http://localhost/EduardoDragon/actualizar_niveles.php",
+                formSet))
         {
-            Debug.Log("Progreso actualizado correctamente: " + www.downloadHandler.text);
+            yield return reqSet.SendWebRequest();
+            if (reqSet.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log($"✅ BD incrementada en 1 nivel (ahora debería ser +1)");
+                NivelManager.RegistrarNivelCompletado(prefNivel);
+            }
+            else
+            {
+                Debug.LogError("❌ Error guardando progreso: " + reqSet.error);
+            }
         }
     }
 }

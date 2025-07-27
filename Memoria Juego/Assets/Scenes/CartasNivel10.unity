@@ -451,6 +451,14 @@ MonoBehaviour:
     spriteB: {fileID: -8169191417261495888, guid: 24a85538fa417d24cb56f22749af19a2, type: 3}
   - spriteA: {fileID: -3732002218159088112, guid: d847c8dc7a533e44084993d8c4a57e50, type: 3}
     spriteB: {fileID: -4613604753705151564, guid: 49d217f15dd73d84d9e7ce4ae5709cc2, type: 3}
+  - spriteA: {fileID: -3732002218159088112, guid: d847c8dc7a533e44084993d8c4a57e50, type: 3}
+    spriteB: {fileID: -4613604753705151564, guid: 49d217f15dd73d84d9e7ce4ae5709cc2, type: 3}
+  - spriteA: {fileID: -3732002218159088112, guid: d847c8dc7a533e44084993d8c4a57e50, type: 3}
+    spriteB: {fileID: -4613604753705151564, guid: 49d217f15dd73d84d9e7ce4ae5709cc2, type: 3}
+  - spriteA: {fileID: -3732002218159088112, guid: d847c8dc7a533e44084993d8c4a57e50, type: 3}
+    spriteB: {fileID: -4613604753705151564, guid: 49d217f15dd73d84d9e7ce4ae5709cc2, type: 3}
+  - spriteA: {fileID: -3732002218159088112, guid: d847c8dc7a533e44084993d8c4a57e50, type: 3}
+    spriteB: {fileID: -4613604753705151564, guid: 49d217f15dd73d84d9e7ce4ae5709cc2, type: 3}
   nivelCompletadoPrefab: {fileID: 6319325544663108970, guid: f61baf1a64eedf14eb76b129919c4bf1, type: 3}
 --- !u!1 &619394800
 GameObject:
@@ -1268,8 +1276,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 83, y: -27}
-  m_SizeDelta: {x: 1452.6343, y: 889.8956}
+  m_AnchoredPosition: {x: 33.182, y: -40.9061}
+  m_SizeDelta: {x: 1853.6, y: 917.7078}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1919944652
 CanvasRenderer:
@@ -1302,7 +1310,7 @@ MonoBehaviour:
   m_CellSize: {x: 290, y: 300}
   m_Spacing: {x: 50, y: 25}
   m_Constraint: 1
-  m_ConstraintCount: 4
+  m_ConstraintCount: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
