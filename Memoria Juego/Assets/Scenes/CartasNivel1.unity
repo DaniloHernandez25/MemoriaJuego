@@ -366,6 +366,13 @@ MonoBehaviour:
   - {fileID: 3399957122028413629, guid: 37d33a9b7b97ff74b87c323c0708d3d1, type: 3}
   - {fileID: 5679451164114769696, guid: 37d33a9b7b97ff74b87c323c0708d3d1, type: 3}
   - {fileID: 363941371061853465, guid: 37d33a9b7b97ff74b87c323c0708d3d1, type: 3}
+  - {fileID: 363941371061853465, guid: 37d33a9b7b97ff74b87c323c0708d3d1, type: 3}
+  - {fileID: 363941371061853465, guid: 37d33a9b7b97ff74b87c323c0708d3d1, type: 3}
+  - {fileID: 363941371061853465, guid: 37d33a9b7b97ff74b87c323c0708d3d1, type: 3}
+  - {fileID: 363941371061853465, guid: 37d33a9b7b97ff74b87c323c0708d3d1, type: 3}
+  - {fileID: 363941371061853465, guid: 37d33a9b7b97ff74b87c323c0708d3d1, type: 3}
+  - {fileID: 363941371061853465, guid: 37d33a9b7b97ff74b87c323c0708d3d1, type: 3}
+  - {fileID: 363941371061853465, guid: 37d33a9b7b97ff74b87c323c0708d3d1, type: 3}
   nivelCompletadoPrefab: {fileID: 6319325544663108970, guid: f61baf1a64eedf14eb76b129919c4bf1, type: 3}
 --- !u!4 &523895980
 Transform:
@@ -1290,10 +1297,10 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 400, y: 410}
+  m_CellSize: {x: 200, y: 210}
   m_Spacing: {x: 50, y: 25}
   m_Constraint: 1
-  m_ConstraintCount: 3
+  m_ConstraintCount: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
