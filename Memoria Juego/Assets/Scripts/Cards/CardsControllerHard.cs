@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
+using System.IO;
 
 [System.Serializable]
 public class SpritePair
@@ -110,7 +111,7 @@ public class CardsControllerHard : MonoBehaviour
                             Instantiate(nivelCompletadoPrefab, canvas.transform);
 
                         // Guarda progreso
-                        StartCoroutine(GuardarProgresoEnBD());
+                        StartCoroutine(GuardarProgresoEnCSV());
                     });
             }
         }
@@ -130,63 +131,70 @@ public class CardsControllerHard : MonoBehaviour
         }
     }
 
-    private IEnumerator GuardarProgresoEnBD()
+    private IEnumerator GuardarProgresoEnCSV()
     {
-    string nombre    = PlayerPrefs.GetString("nombreJugador", "");
-    string fecha     = PlayerPrefs.GetString("fechaSeleccionada", "");
-    int    prefNivel = PlayerPrefs.GetInt("nivelSeleccionado", -1);
+        string nombre    = PlayerPrefs.GetString("nombreJugador", "");
+        string fecha     = PlayerPrefs.GetString("fechaSeleccionada", "");
+        int prefNivel    = PlayerPrefs.GetInt("nivelSeleccionado", -1);
 
-    if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(fecha) || prefNivel < 0)
-    {
-        Debug.LogWarning("❌ Faltan datos para guardar progreso");
-        yield break;
-    }
-
-    // 1) Consultar BD
-    var formGet = new WWWForm();
-    formGet.AddField("nombre", nombre);
-    formGet.AddField("fecha",  fecha);
-    using (var reqGet = UnityWebRequest.Post("http://localhost/EduardoDragon/obtener_niveles.php", formGet))
-    {
-        yield return reqGet.SendWebRequest();
-        if (reqGet.result != UnityWebRequest.Result.Success)
+        if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(fecha) || prefNivel < 0)
         {
-            Debug.LogError("❌ Error al obtener niveles: " + reqGet.error);
+            Debug.LogWarning("❌ Faltan datos para guardar progreso");
             yield break;
         }
 
-        var data = JsonUtility.FromJson<NivelData>(reqGet.downloadHandler.text.Trim());
-        Debug.Log($"📦 BD dice niveles_completados = {data.niveles_completados}");
+        string path = Application.persistentDataPath + "/progreso.csv";
 
-        // 2) Bloqueo si nivelSeleccionado < niveles_completados en BD
-        if (prefNivel < data.niveles_completados)
+        // Crear archivo si no existe
+        if (!File.Exists(path))
         {
-            Debug.Log("🔒 El nivel seleccionado es menor al ya almacenado. No actualizo BD.");
-            yield break;
+            File.WriteAllText(path, "Nombre,Fecha,FasesCompletadas,NivelesCompletados\n");
         }
-    }
 
-        // 3) Enviar el nuevo valor a la BD (siempre delta = 1)
-        var formSet = new WWWForm();
-        formSet.AddField("nombre", nombre);
-        formSet.AddField("fecha",  fecha);
-        // en lugar de prefNivel, siempre mandamos 1 unidad a sumar:
-        formSet.AddField("delta", 1);
+        string[] lineas = File.ReadAllLines(path);
+        bool encontrado = false;
 
-        using (var reqSet = UnityWebRequest.Post(
-                "http://localhost/EduardoDragon/actualizar_niveles.php",
-                formSet))
+        for (int i = 0; i < lineas.Length; i++)
         {
-            yield return reqSet.SendWebRequest();
-            if (reqSet.result == UnityWebRequest.Result.Success)
+            if (lineas[i].StartsWith("Nombre,")) continue;
+
+            string[] columnas = lineas[i].Split(',');
+            if (columnas.Length < 4) continue;
+
+            if (columnas[0] == nombre && columnas[1] == fecha)
             {
-                Debug.Log($"✅ BD incrementada en 1 nivel (ahora debería ser +1)");
+                // Bloqueo si nivelSeleccionado < niveles_completados
+                if (!int.TryParse(columnas[3], out int nivelesActuales))
+                    nivelesActuales = 0;
+
+                if (prefNivel < nivelesActuales)
+                {
+                    Debug.Log("🔒 El nivel seleccionado es menor al ya almacenado. No actualizo CSV.");
+                    yield break;
+                }
+
+                // Incrementar niveles_completados en 1
+                nivelesActuales += 1;
+                columnas[3] = nivelesActuales.ToString();
+                lineas[i] = string.Join(",", columnas);
+                encontrado = true;
+
                 NivelManager.RegistrarNivelCompletado(prefNivel);
-            }
-            else
-            {
-                Debug.LogError("❌ Error guardando progreso: " + reqSet.error);
+                break;
             }
         }
+
+        // Si no existe registro, lo creamos
+        if (!encontrado)
+        {
+            string nuevaLinea = $"{nombre},{fecha},0,1"; // FasesCompletadas = 0, NivelesCompletados = 1
+            List<string> lineasList = new List<string>(lineas) { nuevaLinea };
+            lineas = lineasList.ToArray();
+        }
+
+        File.WriteAllLines(path, lineas);
+        Debug.Log("✅ Progreso guardado en CSV correctamente");
+
+        yield return null;
     }
 }

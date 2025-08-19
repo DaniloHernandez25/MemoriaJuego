@@ -1,7 +1,7 @@
-// NivelManager.cs
+// NivelManagerCSV.cs
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Networking;
+using System.IO;
 using System.Collections;
 using TMPro;
 
@@ -11,19 +11,19 @@ public class NivelManager : MonoBehaviour
     public struct LevelButton
     {
         public Button button;          // tu botón
-        public Image bgImage;         // su fondo
-        public TextMeshProUGUI label;  // el TextMeshPro para el número/texto
+        public Image bgImage;          // su fondo
+        public TextMeshProUGUI label;  // TextMeshPro para el número/texto
         [Tooltip("Texto que se mostrará cuando esté desbloqueado")]
         public string unlockedText;    // editable en Unity
     }
 
     [Header("Botones y fondos")]
     public LevelButton[] niveles;
+
     [Header("Sprites")]
     public Sprite lockedSprite;
     public Sprite unlockedSprite;
 
-    // Ahora el setter es private; uso RegistrarNivel para cambiarlo
     public static int MaxNivelesCompletados { get; private set; } = -1;
 
     private string nombreJugador;
@@ -38,73 +38,85 @@ public class NivelManager : MonoBehaviour
             Debug.LogWarning("⚠️ Falta nombre o fecha en PlayerPrefs");
             return;
         }
-        StartCoroutine(ObtenerYAplicarProgreso());
+
+        LeerProgresoDesdeCSV();
+        AplicarProgresoALosBotones();
     }
 
-    private IEnumerator ObtenerYAplicarProgreso()
+    private void LeerProgresoDesdeCSV()
     {
-        var form = new WWWForm();
-        form.AddField("nombre", nombreJugador);
-        form.AddField("fecha", fechaPartida);
+        string path = Application.persistentDataPath + "/progreso.csv";
 
-        using var www = UnityWebRequest.Post(
-            "http://localhost/EduardoDragon/obtener_niveles.php", form);
-        yield return www.SendWebRequest();
-
-        if (www.result != UnityWebRequest.Result.Success)
+        if (!File.Exists(path))
         {
-            Debug.LogError("Error al obtener niveles: " + www.error);
-            yield break;
+            Debug.LogWarning("⚠️ No se encontró el archivo CSV de progreso.");
+            MaxNivelesCompletados = 0;
+            return;
         }
 
-        var datos = JsonUtility.FromJson<NivelData>(www.downloadHandler.text.Trim());
-        MaxNivelesCompletados = datos.niveles_completados;
-        Debug.Log($"🌟 NivelManager: max niveles = {MaxNivelesCompletados}");
+        string[] lineas = File.ReadAllLines(path);
+        bool encontrado = false;
 
-        for (int i = 0; i < niveles.Length; i++)
+        foreach (string linea in lineas)
         {
-            bool ok = i <= MaxNivelesCompletados;
-            niveles[i].button.interactable = ok;
-            niveles[i].bgImage.sprite = ok ? unlockedSprite : lockedSprite;
-            niveles[i].bgImage.SetNativeSize();
+            if (linea.StartsWith("Nombre,")) continue; // Saltar cabecera
+
+            string[] columnas = linea.Split(',');
+
+            // Columnas: Nombre, Fecha, FasesCompletadas, NivelesCompletados
+            if (columnas.Length >= 4 && columnas[0] == nombreJugador && columnas[1] == fechaPartida)
+            {
+                if (!int.TryParse(columnas[3], out int nivelesCompletados))
+                {
+                    Debug.LogWarning("⚠️ Error al leer niveles completados en CSV");
+                    nivelesCompletados = 0;
+                }
+
+                MaxNivelesCompletados = nivelesCompletados;
+                encontrado = true;
+                Debug.Log($"🌟 NivelManagerCSV: max niveles = {MaxNivelesCompletados}");
+                break;
+            }
         }
+
+        if (!encontrado)
+        {
+            MaxNivelesCompletados = 0;
+            Debug.LogWarning("⚠️ No se encontró progreso para el jugador/fecha");
+        }
+    }
+
+    private void AplicarProgresoALosBotones()
+    {
         for (int i = 0; i < niveles.Length; i++)
         {
-            bool ok = i <= MaxNivelesCompletados;
+            bool desbloqueado = i <= MaxNivelesCompletados;
+
             var lvl = niveles[i];
 
-            // estado de interacción e imagen
-            lvl.button.interactable = ok;
-            lvl.bgImage.sprite = ok ? unlockedSprite : lockedSprite;
+            lvl.button.interactable = desbloqueado;
+            lvl.bgImage.sprite = desbloqueado ? unlockedSprite : lockedSprite;
             lvl.bgImage.SetNativeSize();
 
-            // texto: solo activo si está desbloqueado
             if (lvl.label != null)
             {
-                lvl.label.gameObject.SetActive(ok);
-                if (ok)
+                lvl.label.gameObject.SetActive(desbloqueado);
+                if (desbloqueado)
                     lvl.label.text = lvl.unlockedText;
             }
         }
     }
 
-    // Llamar desde fuera para actualizar el máximo
     public static void RegistrarNivelCompletado(int nivel)
     {
         if (nivel > MaxNivelesCompletados)
             MaxNivelesCompletados = nivel;
     }
 
-    [System.Serializable]
-    private class NivelData
-    {
-        public int niveles_completados;
-    }
     void Awake()
     {
         foreach (var lvl in niveles)
             if (lvl.label != null)
                 lvl.label.gameObject.SetActive(false);
     }
-
 }

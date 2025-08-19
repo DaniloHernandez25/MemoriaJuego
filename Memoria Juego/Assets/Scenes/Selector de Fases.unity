@@ -1152,7 +1152,7 @@ GameObject:
   - component: {fileID: 1541870110}
   - component: {fileID: 1541870112}
   m_Layer: 0
-  m_Name: FAIRY-TAIL-Main-Theme-SLOW
+  m_Name: Audio-Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1168,8 +1168,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 6e858b39b7ad41d4d8073b0d1547dac0, type: 3}
-  m_Resource: {fileID: 8300000, guid: 6e858b39b7ad41d4d8073b0d1547dac0, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 1

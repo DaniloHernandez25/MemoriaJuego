@@ -1,9 +1,10 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Networking;
-using System.Collections;
 using TMPro;
+using System.IO;
+using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+//C:\Users\Usuario\AppData\LocalLow\DefaultCompany\Memoria Juego\jugadores.csv
 
 public class LoadNextSceneBD : MonoBehaviour
 {
@@ -33,32 +34,66 @@ public class LoadNextSceneBD : MonoBehaviour
             return;
         }
 
-        // 🔸 Guardar el nombre para usarlo en la siguiente escena
+        // Guardar el nombre para usarlo en la siguiente escena
         PlayerPrefs.SetString("nombreJugador", nombre);
         PlayerPrefs.Save();
 
-        StartCoroutine(GuardarEnBD(nombre, urlImagen));
+        GuardarEnCSV(nombre, urlImagen); // Guardar en CSV
+        CargarEscena(); // Cambiar de escena
     }
 
-
-    private IEnumerator GuardarEnBD(string nombre, string urlImagen)
+    private void GuardarEnCSV(string nombre, string urlImagen)
     {
-        WWWForm form = new WWWForm();
-        form.AddField("nombre", nombre);
-        form.AddField("perfil", urlImagen);
+        string path = Application.persistentDataPath + "/jugadores.csv";
+        bool fileExists = File.Exists(path);
+        bool nombreExistente = false;
 
-        UnityWebRequest www = UnityWebRequest.Post("http://localhost/EduardoDragon/guardar_perfil.php", form);
-        yield return www.SendWebRequest();
+        // Crear una lista para guardar las líneas modificadas
+        List<string> lineasModificadas = new List<string>();
 
-        if (www.result != UnityWebRequest.Result.Success)
+        // Verificar si el archivo ya existe
+        if (fileExists)
         {
-            Debug.LogError("Error al guardar: " + www.error);
+            // Leer todas las líneas del archivo CSV
+            string[] lineas = File.ReadAllLines(path);
+
+            foreach (var linea in lineas)
+            {
+                string[] columnas = linea.Split(',');
+
+                if (columnas.Length >= 2 && columnas[0] == nombre)
+                {
+                    // Si el nombre ya existe, actualizar el perfil
+                    lineasModificadas.Add($"{nombre},{urlImagen}");
+                    nombreExistente = true;
+                }
+                else
+                {
+                    // Si el nombre no existe, mantener la línea tal como está
+                    lineasModificadas.Add(linea);
+                }
+            }
+
+            // Si el nombre no existe, agregar una nueva entrada
+            if (!nombreExistente)
+            {
+                lineasModificadas.Add($"{nombre},{urlImagen}");
+            }
+
+            // Sobrescribir el archivo con las líneas modificadas
+            File.WriteAllLines(path, lineasModificadas.ToArray());
         }
         else
         {
-            Debug.Log("Guardado exitoso: " + www.downloadHandler.text);
-            CargarEscena();
+            // Si el archivo no existe, crear uno nuevo
+            using (StreamWriter writer = new StreamWriter(path, false)) // "false" sobrescribe el archivo
+            {
+                writer.WriteLine("Nombre,Perfil"); // Escribir las cabeceras
+                writer.WriteLine($"{nombre},{urlImagen}"); // Escribir la nueva entrada
+            }
         }
+
+        Debug.Log("Datos guardados o actualizados exitosamente en CSV.");
     }
 
     private void CargarEscena()

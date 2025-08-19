@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Networking;
-using System.Collections;
+using System.IO;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class ListaDePartidas : MonoBehaviour
 {
@@ -13,7 +13,6 @@ public class ListaDePartidas : MonoBehaviour
     private string nombreJugador;
     public int escenaFases = 5;
 
-
     [System.Serializable]
     public class Partida
     {
@@ -22,7 +21,7 @@ public class ListaDePartidas : MonoBehaviour
 
     private void Start()
     {
-        // 🔹 Obtener el nombre del jugador desde PlayerPrefs
+        // Obtener el nombre del jugador desde PlayerPrefs
         nombreJugador = PlayerPrefs.GetString("nombreJugador", "");
 
         if (string.IsNullOrEmpty(nombreJugador))
@@ -31,43 +30,64 @@ public class ListaDePartidas : MonoBehaviour
             return;
         }
 
-        CargarPartidas();
+        CargarPartidasDesdeCSV(); // Cargar las partidas desde el archivo CSV
     }
 
-
-    public void CargarPartidas()
+    public void CargarPartidasDesdeCSV()
     {
-        StartCoroutine(ObtenerFechas(nombreJugador));
-    }
+        string path = Application.persistentDataPath + "/progreso.csv";
 
-    IEnumerator ObtenerFechas(string nombre)
-    {
-        WWWForm form = new WWWForm();
-        form.AddField("nombre", nombre);
-
-        UnityWebRequest www = UnityWebRequest.Post("http://localhost/EduardoDragon/obtener_fechas.php", form);
-        yield return www.SendWebRequest();
-
-        if (www.result != UnityWebRequest.Result.Success)
+        if (!File.Exists(path))
         {
-            Debug.LogError("Error: " + www.error);
-            yield break;
+            Debug.LogWarning("No se encontró el archivo CSV de partidas.");
+            return;
         }
 
-        Partida[] partidas = JsonHelper.FromJson<Partida>(JsonHelper.FixJsonArray(www.downloadHandler.text));
+        List<Partida> partidas = new List<Partida>();
 
+        // Leer las líneas del archivo CSV
+        string[] lineas = File.ReadAllLines(path);
+
+        // Saltar la cabecera
+        bool primeraLinea = true;
+
+        foreach (string linea in lineas)
+        {
+            if (primeraLinea)
+            {
+                primeraLinea = false;
+                continue; // Saltar la cabecera
+            }
+
+            string[] columnas = linea.Split(',');
+
+            if (columnas.Length >= 4 && columnas[0] == nombreJugador) // Filtrar solo las partidas del jugador
+            {
+                Partida partida = new Partida();
+                partida.fecha = columnas[1];  // La fecha está en la segunda columna
+                partidas.Add(partida);
+            }
+        }
+
+        MostrarPartidas(partidas);
+    }
+
+    private void MostrarPartidas(List<Partida> partidas)
+    {
+        // Limpiar los botones existentes
         foreach (Transform child in contentPanel)
         {
             Destroy(child.gameObject);
         }
+
+        // Crear un botón para cada partida
         foreach (Partida p in partidas)
         {
             GameObject boton = Instantiate(botonPrefab, contentPanel);
             PartidaButton script = boton.GetComponent<PartidaButton>();
 
-            // ✅ configuramos la fecha y la escena que queremos cargar
+            // Configuramos el botón con la fecha de la partida
             script.Configurar(p.fecha, escenaFases);
         }
-
     }
 }

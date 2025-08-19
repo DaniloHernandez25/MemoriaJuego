@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Networking;
 using System.Collections;
+using System.IO;
 
 public class FaseManager : MonoBehaviour
 {
@@ -24,39 +24,56 @@ public class FaseManager : MonoBehaviour
             return;
         }
 
-        StartCoroutine(ObtenerFases(nombreJugador, fechaPartida));
+        LeerFasesDesdeCSV(nombreJugador); // Leer las fases directamente desde el archivo CSV
     }
 
-    private IEnumerator ObtenerFases(string nombre, string fecha)
+    // Función para leer las fases completadas desde el archivo CSV
+    private void LeerFasesDesdeCSV(string nombre)
     {
-        WWWForm form = new WWWForm();
-        form.AddField("nombre", nombre);
-        form.AddField("fecha", fecha);
+        string path = Application.persistentDataPath + "/progreso.csv";
 
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/EduardoDragon/obtener_fases.php", form))
+        if (!File.Exists(path))
         {
-            yield return www.SendWebRequest();
+            Debug.LogWarning("⚠️ No se encontró el archivo CSV de progreso.");
+            return;
+        }
 
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                Debug.LogError("❌ Error al obtener fases: " + www.error);
-                yield break;
-            }
+        string[] lineas = File.ReadAllLines(path);
+        bool jugadorEncontrado = false;
 
-            string json = www.downloadHandler.text.Trim();
-            Debug.Log("📦 JSON recibido (raw): " + json);
+        foreach (string linea in lineas)
+        {
+            // Ignorar la cabecera
+            if (linea.StartsWith("Nombre,"))
+                continue;
 
-            if (json.StartsWith("{") && json.Contains("fases_completadas"))
+            string[] columnas = linea.Split(',');
+
+            if (columnas.Length >= 4 && columnas[0] == nombre)
             {
-                FaseData datos = JsonUtility.FromJson<FaseData>(json);
-                Debug.Log("✅ Fases completadas (parseado): " + datos.fases_completadas);
-                DesbloquearBotones(datos.fases_completadas);
+                // Si encontramos el jugador, obtenemos las fases completadas
+                int fasesCompletadas = 0;
+
+                // Intentar convertir la fase completada a un número
+                if (int.TryParse(columnas[2].Trim(), out fasesCompletadas)) 
+                {
+                    Debug.Log("✅ Fases completadas para " + nombre + ": " + fasesCompletadas);
+                }
+                else
+                {
+                    Debug.LogWarning("⚠️ No se pudo convertir fases_completadas a int para " + nombre);
+                }
+
+                DesbloquearBotones(fasesCompletadas);
+                jugadorEncontrado = true;
+                break;
             }
-            else
-            {
-                Debug.LogWarning("⚠️ JSON inválido o campos faltantes.");
-                DesbloquearBotones(0);
-            }
+        }
+
+        if (!jugadorEncontrado)
+        {
+            Debug.LogWarning("⚠️ No se encontraron fases completadas para el jugador " + nombre);
+            DesbloquearBotones(0); // Si no encontramos el jugador, no desbloqueamos ninguna fase
         }
     }
 
@@ -77,12 +94,5 @@ public class FaseManager : MonoBehaviour
 
             Debug.Log($"🔓 Botón {i}: {(botonesDeFase[i].interactable ? "Desbloqueado" : "Bloqueado")}");
         }
-    }
-
-
-    [System.Serializable]
-    public class FaseData
-    {
-        public int fases_completadas;
     }
 }
