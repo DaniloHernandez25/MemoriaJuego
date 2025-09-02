@@ -35,6 +35,7 @@ public class LoadNextSceneBD : MonoBehaviour
 
         // Guardar el nombre para usarlo en la siguiente escena
         PlayerPrefs.SetString("nombreJugador", nombre);
+        PlayerPrefs.SetString("imagenJugador", urlImagen);
         PlayerPrefs.Save();
 
         GuardarEnCSV(nombre, urlImagen); // Guardar en CSV
