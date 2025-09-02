@@ -1,8 +1,6 @@
-// NivelManagerCSV.cs
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
-using System.Collections;
 using TMPro;
 
 public class NivelManager : MonoBehaviour
@@ -10,11 +8,11 @@ public class NivelManager : MonoBehaviour
     [System.Serializable]
     public struct LevelButton
     {
-        public Button button;          // tu botón
-        public Image bgImage;          // su fondo
-        public TextMeshProUGUI label;  // TextMeshPro para el número/texto
+        public Button button;
+        public Image bgImage;
+        public TextMeshProUGUI label;
         [Tooltip("Texto que se mostrará cuando esté desbloqueado")]
-        public string unlockedText;    // editable en Unity
+        public string unlockedText;
     }
 
     [Header("Botones y fondos")]
@@ -23,6 +21,13 @@ public class NivelManager : MonoBehaviour
     [Header("Sprites")]
     public Sprite lockedSprite;
     public Sprite unlockedSprite;
+
+    [Header("Configuración de escena")]
+    [Tooltip("Nivel inicial de esta escena (ej. 1 para fase 1, 11 para fase 2, 21 para fase 3...)")]
+    public int nivelInicial = 1;
+
+    [Tooltip("Nivel final de esta escena (ej. 10 para fase 1, 20 para fase 2, 30 para fase 3...)")]
+    public int nivelFinal = 10;
 
     public static int MaxNivelesCompletados { get; private set; } = -1;
 
@@ -35,7 +40,6 @@ public class NivelManager : MonoBehaviour
         fechaPartida = PlayerPrefs.GetString("fechaSeleccionada", "");
         if (string.IsNullOrEmpty(nombreJugador) || string.IsNullOrEmpty(fechaPartida))
         {
-            Debug.LogWarning("⚠️ Falta nombre o fecha en PlayerPrefs");
             return;
         }
 
@@ -49,7 +53,6 @@ public class NivelManager : MonoBehaviour
 
         if (!File.Exists(path))
         {
-            Debug.LogWarning("⚠️ No se encontró el archivo CSV de progreso.");
             MaxNivelesCompletados = 0;
             return;
         }
@@ -59,22 +62,19 @@ public class NivelManager : MonoBehaviour
 
         foreach (string linea in lineas)
         {
-            if (linea.StartsWith("Nombre,")) continue; // Saltar cabecera
+            if (linea.StartsWith("Nombre,")) continue;
 
             string[] columnas = linea.Split(',');
 
-            // Columnas: Nombre, Fecha, FasesCompletadas, NivelesCompletados
             if (columnas.Length >= 4 && columnas[0] == nombreJugador && columnas[1] == fechaPartida)
             {
                 if (!int.TryParse(columnas[3], out int nivelesCompletados))
                 {
-                    Debug.LogWarning("⚠️ Error al leer niveles completados en CSV");
                     nivelesCompletados = 0;
                 }
 
                 MaxNivelesCompletados = nivelesCompletados;
                 encontrado = true;
-                Debug.Log($"🌟 NivelManagerCSV: max niveles = {MaxNivelesCompletados}");
                 break;
             }
         }
@@ -82,7 +82,6 @@ public class NivelManager : MonoBehaviour
         if (!encontrado)
         {
             MaxNivelesCompletados = 0;
-            Debug.LogWarning("⚠️ No se encontró progreso para el jugador/fecha");
         }
     }
 
@@ -90,7 +89,8 @@ public class NivelManager : MonoBehaviour
     {
         for (int i = 0; i < niveles.Length; i++)
         {
-            bool desbloqueado = i <= MaxNivelesCompletados;
+            int numeroNivel = nivelInicial + i; // 👈 nivel real que representa este botón
+            bool desbloqueado = numeroNivel <= MaxNivelesCompletados || numeroNivel == nivelInicial;
 
             var lvl = niveles[i];
 

@@ -197,7 +197,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      "ni\xF1o sucio_0": -2627217306978161925
+      "ni\xF1o sucio_1": 8444332627093278007
+      "ni\xF1o sucio_2": 6263669495374876156
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

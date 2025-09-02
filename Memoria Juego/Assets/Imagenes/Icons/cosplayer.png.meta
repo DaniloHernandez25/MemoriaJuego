@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      cosplayer_0: 1005801324359841828
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

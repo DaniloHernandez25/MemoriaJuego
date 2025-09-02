@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      dinosaurio_0: -4283302398219984554
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

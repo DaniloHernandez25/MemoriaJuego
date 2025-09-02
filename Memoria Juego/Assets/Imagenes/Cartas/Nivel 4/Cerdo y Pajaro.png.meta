@@ -172,7 +172,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Cerdo y Pajaro_0: 967760595016200594
+      Cerdo y Pajaro_1: 5919662942223950929
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

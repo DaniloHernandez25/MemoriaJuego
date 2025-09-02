@@ -109,7 +109,6 @@ public class CardsController : MonoBehaviour
 
         if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(fecha) || prefNivel < 0)
         {
-            Debug.LogWarning("❌ Faltan datos para guardar progreso");
             yield break;
         }
 
@@ -139,7 +138,6 @@ public class CardsController : MonoBehaviour
 
                 if (prefNivel < nivelesActuales)
                 {
-                    Debug.Log("🔒 El nivel seleccionado es menor al ya almacenado. No actualizo CSV.");
                     yield break;
                 }
 
@@ -163,7 +161,6 @@ public class CardsController : MonoBehaviour
         }
 
         File.WriteAllLines(path, lineas);
-        Debug.Log("✅ Progreso guardado en CSV correctamente");
 
         yield return null;
     }

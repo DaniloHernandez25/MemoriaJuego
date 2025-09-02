@@ -18,6 +18,7 @@ public class CardsControllerHard : MonoBehaviour
     [SerializeField] Transform gridTransform;
     [SerializeField] private List<SpritePair> spritePairsData;
     [SerializeField] GameObject nivelCompletadoPrefab;
+    [SerializeField] private bool esUltimoNivel = false;
 
     private List<Sprite> spritePool;
     private Dictionary<Sprite, Sprite> matchMap;
@@ -139,7 +140,6 @@ public class CardsControllerHard : MonoBehaviour
 
         if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(fecha) || prefNivel < 0)
         {
-            Debug.LogWarning("❌ Faltan datos para guardar progreso");
             yield break;
         }
 
@@ -163,25 +163,32 @@ public class CardsControllerHard : MonoBehaviour
 
             if (columnas[0] == nombre && columnas[1] == fecha)
             {
-                // Bloqueo si nivelSeleccionado < niveles_completados
                 if (!int.TryParse(columnas[3], out int nivelesActuales))
                     nivelesActuales = 0;
 
                 if (prefNivel < nivelesActuales)
                 {
-                    Debug.Log("🔒 El nivel seleccionado es menor al ya almacenado. No actualizo CSV.");
                     yield break;
                 }
 
                 // Incrementar niveles_completados en 1
                 nivelesActuales += 1;
                 columnas[3] = nivelesActuales.ToString();
+
+                // ✅ Incrementar fases_completadas si es el último nivel
+                if (esUltimoNivel && int.TryParse(columnas[2], out int fasesActuales))
+                {
+                    fasesActuales += 1;
+                    columnas[2] = fasesActuales.ToString();
+                }
+
                 lineas[i] = string.Join(",", columnas);
                 encontrado = true;
 
                 NivelManager.RegistrarNivelCompletado(prefNivel);
                 break;
             }
+
         }
 
         // Si no existe registro, lo creamos
@@ -193,7 +200,6 @@ public class CardsControllerHard : MonoBehaviour
         }
 
         File.WriteAllLines(path, lineas);
-        Debug.Log("✅ Progreso guardado en CSV correctamente");
 
         yield return null;
     }

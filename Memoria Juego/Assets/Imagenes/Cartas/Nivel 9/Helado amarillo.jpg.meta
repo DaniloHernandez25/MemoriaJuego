@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Helado amarillo_0: -9205468913714799227
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

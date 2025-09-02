@@ -17,6 +17,8 @@ public class ListaDePartidas : MonoBehaviour
     public class Partida
     {
         public string fecha;
+        public int fases;
+        public int niveles;
     }
 
     private void Start()
@@ -26,11 +28,10 @@ public class ListaDePartidas : MonoBehaviour
 
         if (string.IsNullOrEmpty(nombreJugador))
         {
-            Debug.LogWarning("No se encontró el nombre del jugador");
             return;
         }
 
-        CargarPartidasDesdeCSV(); // Cargar las partidas desde el archivo CSV
+        CargarPartidasDesdeCSV();
     }
 
     public void CargarPartidasDesdeCSV()
@@ -39,32 +40,43 @@ public class ListaDePartidas : MonoBehaviour
 
         if (!File.Exists(path))
         {
-            Debug.LogWarning("No se encontró el archivo CSV de partidas.");
             return;
         }
 
         List<Partida> partidas = new List<Partida>();
+        string[] lineas;
 
-        // Leer las líneas del archivo CSV
-        string[] lineas = File.ReadAllLines(path);
+        // ✅ Lectura segura que evita IOException
+        using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+        using (StreamReader reader = new StreamReader(fs))
+        {
+            List<string> tempLineas = new List<string>();
+            while (!reader.EndOfStream)
+            {
+                tempLineas.Add(reader.ReadLine());
+            }
+            lineas = tempLineas.ToArray();
+        }
 
-        // Saltar la cabecera
         bool primeraLinea = true;
-
         foreach (string linea in lineas)
         {
             if (primeraLinea)
             {
                 primeraLinea = false;
-                continue; // Saltar la cabecera
+                continue; // Saltar cabecera
             }
 
             string[] columnas = linea.Split(',');
 
-            if (columnas.Length >= 4 && columnas[0] == nombreJugador) // Filtrar solo las partidas del jugador
+            if (columnas.Length >= 4 && columnas[0] == nombreJugador)
             {
                 Partida partida = new Partida();
-                partida.fecha = columnas[1];  // La fecha está en la segunda columna
+                partida.fecha = columnas[1];
+
+                int.TryParse(columnas[2], out partida.fases);
+                int.TryParse(columnas[3], out partida.niveles);
+
                 partidas.Add(partida);
             }
         }
@@ -72,22 +84,21 @@ public class ListaDePartidas : MonoBehaviour
         MostrarPartidas(partidas);
     }
 
+
     private void MostrarPartidas(List<Partida> partidas)
     {
-        // Limpiar los botones existentes
         foreach (Transform child in contentPanel)
         {
             Destroy(child.gameObject);
         }
 
-        // Crear un botón para cada partida
         foreach (Partida p in partidas)
         {
             GameObject boton = Instantiate(botonPrefab, contentPanel);
             PartidaButton script = boton.GetComponent<PartidaButton>();
 
-            // Configuramos el botón con la fecha de la partida
-            script.Configurar(p.fecha, escenaFases);
+            // ✅ Configurar botón con fecha, fases y niveles
+            script.Configurar(p.fecha, p.fases, p.niveles, escenaFases);
         }
     }
 }

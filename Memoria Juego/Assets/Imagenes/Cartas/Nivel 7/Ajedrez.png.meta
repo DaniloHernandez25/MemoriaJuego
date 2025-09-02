@@ -222,7 +222,11 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Ajedrez_0: 6882424873531514068
+      Ajedrez_1: -621709666298598599
+      Ajedrez_2: 7967816411513677360
+      Ajedrez_3: -3352606520424850422
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

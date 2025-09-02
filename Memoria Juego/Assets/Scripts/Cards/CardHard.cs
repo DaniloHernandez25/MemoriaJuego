@@ -21,10 +21,6 @@ public class CardHard : MonoBehaviour
     {
         controller.SetSelected(this);
     }
-    else
-    {
-        Debug.LogWarning("Controller no asignado en la carta.");
-    }
 }
 
 

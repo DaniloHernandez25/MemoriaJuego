@@ -6,33 +6,36 @@ using UnityEngine.SceneManagement;
 public class PartidaButton : MonoBehaviour
 {
     public string fechaPartida;
-    public int escenaADondeIr = 4; // cambia este índice por el de tu escena real
+    public int fasesCompletadas;
+    public int nivelesCompletados;
+    public int escenaADondeIr = 4;
 
     private void Start()
     {
-        // Asignar el listener si aún no lo haces desde el generador
         GetComponent<Button>().onClick.AddListener(OnClick);
     }
 
-    public void Configurar(string fecha, int escena)
+    // ✅ Recibe fecha, fases, niveles y escena
+    public void Configurar(string fecha, int fases, int niveles, int escena)
     {
         fechaPartida = fecha;
+        fasesCompletadas = fases;
+        nivelesCompletados = niveles;
         escenaADondeIr = escena;
-        GetComponentInChildren<TextMeshProUGUI>().text = fecha;
+
+        // ✅ Mostrar solo fases y niveles en el botón
+        GetComponentInChildren<TextMeshProUGUI>().text = $"Fases: {fases} | Niveles: {niveles}";
     }
 
     public void OnClick()
     {
         string nombreGuardado = PlayerPrefs.GetString("nombreJugador", "");
-        Debug.Log("Nombre guardado actualmente: " + nombreGuardado);
 
         PlayerPrefs.SetString("fechaSeleccionada", fechaPartida);
+        PlayerPrefs.SetInt("fasesSeleccionadas", fasesCompletadas);
+        PlayerPrefs.SetInt("nivelesSeleccionados", nivelesCompletados);
         PlayerPrefs.Save();
 
-        Debug.Log("Fecha guardada: " + fechaPartida);
         SceneManager.LoadScene(escenaADondeIr);
     }
-
-
-
 }

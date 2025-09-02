@@ -197,7 +197,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Leyendo_0: -3040648063817340898
+      Leyendo_1: -13949011547131461
+      Leyendo_2: -4390321442151707430
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

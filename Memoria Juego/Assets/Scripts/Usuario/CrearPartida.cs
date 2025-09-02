@@ -14,7 +14,6 @@ public class CrearPartida : MonoBehaviour
 
         if (string.IsNullOrEmpty(nombreJugador))
         {
-            Debug.LogWarning("No hay nombre guardado en PlayerPrefs.");
             return;
         }
 
@@ -24,7 +23,6 @@ public class CrearPartida : MonoBehaviour
         // 🔸 Guardar esa fecha en PlayerPrefs
         PlayerPrefs.SetString("fechaSeleccionada", fechaPartida);
         PlayerPrefs.Save();
-        Debug.Log("Fecha de partida guardada localmente: " + fechaPartida);
 
         // Crear nueva partida con 0 niveles en el archivo CSV
         CrearPartidaEnCSV(nombreJugador, fechaPartida);
@@ -56,7 +54,5 @@ public class CrearPartida : MonoBehaviour
             // Fases y niveles siempre serán 0 en la creación de una nueva partida
             writer.WriteLine($"{nombre},{fecha},1,0"); // Escribir la nueva partida con valores predeterminados
         }
-
-        Debug.Log("Nueva partida guardada en CSV: " + fecha);
     }
 }

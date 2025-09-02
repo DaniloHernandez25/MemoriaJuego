@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using System.IO;
 
 public class FaseManager : MonoBehaviour
 {
     public Button[] botonesDeFase; // Asignar los botones en el Inspector
+    public Sprite spriteBloqueado; // Imagen para botón bloqueado
+    public Sprite spriteDesbloqueado; // Imagen para botón desbloqueado
 
     private string nombreJugador;
     private string fechaPartida;
@@ -15,12 +16,8 @@ public class FaseManager : MonoBehaviour
         nombreJugador = PlayerPrefs.GetString("nombreJugador", "");
         fechaPartida = PlayerPrefs.GetString("fechaSeleccionada", "");
 
-        Debug.Log("💡 Nombre en FaseManager: " + nombreJugador);
-        Debug.Log("💡 Fecha en FaseManager: " + fechaPartida);
-
         if (string.IsNullOrEmpty(nombreJugador) || string.IsNullOrEmpty(fechaPartida))
         {
-            Debug.LogWarning("⚠️ Faltan datos en PlayerPrefs");
             return;
         }
 
@@ -34,7 +31,6 @@ public class FaseManager : MonoBehaviour
 
         if (!File.Exists(path))
         {
-            Debug.LogWarning("⚠️ No se encontró el archivo CSV de progreso.");
             return;
         }
 
@@ -44,8 +40,7 @@ public class FaseManager : MonoBehaviour
         foreach (string linea in lineas)
         {
             // Ignorar la cabecera
-            if (linea.StartsWith("Nombre,"))
-                continue;
+            if (linea.StartsWith("Nombre,")) continue;
 
             string[] columnas = linea.Split(',');
 
@@ -54,14 +49,8 @@ public class FaseManager : MonoBehaviour
                 // Si encontramos el jugador, obtenemos las fases completadas
                 int fasesCompletadas = 0;
 
-                // Intentar convertir la fase completada a un número
-                if (int.TryParse(columnas[2].Trim(), out fasesCompletadas)) 
+                if (int.TryParse(columnas[2].Trim(), out fasesCompletadas))
                 {
-                    Debug.Log("✅ Fases completadas para " + nombre + ": " + fasesCompletadas);
-                }
-                else
-                {
-                    Debug.LogWarning("⚠️ No se pudo convertir fases_completadas a int para " + nombre);
                 }
 
                 DesbloquearBotones(fasesCompletadas);
@@ -72,7 +61,6 @@ public class FaseManager : MonoBehaviour
 
         if (!jugadorEncontrado)
         {
-            Debug.LogWarning("⚠️ No se encontraron fases completadas para el jugador " + nombre);
             DesbloquearBotones(0); // Si no encontramos el jugador, no desbloqueamos ninguna fase
         }
     }
@@ -81,18 +69,27 @@ public class FaseManager : MonoBehaviour
     {
         for (int i = 0; i < botonesDeFase.Length; i++)
         {
+            bool desbloqueado;
+
             if (fasesCompletadas <= 0)
             {
                 // Solo el primer botón activo si no hay progreso
-                botonesDeFase[i].interactable = (i == 0);
+                desbloqueado = (i == 0);
             }
             else
             {
                 // Desbloquea desde el primero hasta el número indicado
-                botonesDeFase[i].interactable = (i < fasesCompletadas);
+                desbloqueado = (i < fasesCompletadas);
             }
 
-            Debug.Log($"🔓 Botón {i}: {(botonesDeFase[i].interactable ? "Desbloqueado" : "Bloqueado")}");
+            botonesDeFase[i].interactable = desbloqueado;
+
+            // Cambiar la imagen según estado
+            Image img = botonesDeFase[i].GetComponent<Image>();
+            if (img != null)
+            {
+                img.sprite = desbloqueado ? spriteDesbloqueado : spriteBloqueado;
+            }
         }
     }
 }

@@ -16,7 +16,6 @@ public class LoadNextSceneNormal : MonoBehaviour
 
     public void LoadNext()
     {
-        Debug.Log("Intentando cargar escena " + sceneIndexToLoad);
         if (sceneIndexToLoad >= 0)
         {
             SceneManager.LoadScene(sceneIndexToLoad);

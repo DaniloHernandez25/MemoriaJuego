@@ -22,15 +22,12 @@ public class LoadNextSceneConPref : MonoBehaviour
 
         if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(fecha))
         {
-            Debug.LogWarning("⚠️ No se puede continuar: faltan datos en PlayerPrefs.");
             return;
         }
 
         // Guarda el nivel “dinámico”
         PlayerPrefs.SetInt("nivelSeleccionado", nivelIndex);
         PlayerPrefs.Save();
-
-        Debug.Log($"✅ Nivel seleccionado: {nivelIndex}");
 
         // Opcional: carga otra escena
         if (escenaDestino >= 0)

@@ -272,7 +272,13 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Animales matriz_0: 1496899014641713261
+      Animales matriz_1: 1152081783748459642
+      Animales matriz_2: 7808793932781149168
+      Animales matriz_3: 974871610206620891
+      Animales matriz_4: -4641385358354607013
+      Animales matriz_5: -5237371868112507226
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

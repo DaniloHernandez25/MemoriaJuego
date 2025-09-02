@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Camiseta roja_0: 453801198523561737
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      sirena_0: 1261949741477614662
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

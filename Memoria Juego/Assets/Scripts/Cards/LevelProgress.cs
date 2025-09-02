@@ -50,7 +50,6 @@ public class LevelProgress : MonoBehaviour
         else
         {
             string json = www.downloadHandler.text;
-            Debug.Log("📦 JSON recibido en LevelProgress: " + json);  // 👈 MUY importante
             ProgresoDatos progreso = JsonUtility.FromJson<ProgresoDatos>(json);
 
             for (int i = 1; i <= progreso.niveles_completados; i++)

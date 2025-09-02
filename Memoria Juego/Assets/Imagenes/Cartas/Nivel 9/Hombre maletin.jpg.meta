@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Hombre maletin_0: -7880737503968695313
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      arlequin_0: 8044042384530501134
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

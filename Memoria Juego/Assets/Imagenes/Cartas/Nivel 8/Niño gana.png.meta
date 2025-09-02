@@ -247,7 +247,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      "Ni\xF1o gana_0": -3102891360146786819
+      "Ni\xF1o gana_1": -3693218351866499856
+      "Ni\xF1o gana_2": -6464898970200769169
+      "Ni\xF1o gana_3": 1355327586840972987
+      "Ni\xF1o gana_4": 3309161639900161419
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

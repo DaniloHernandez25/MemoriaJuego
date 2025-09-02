@@ -197,7 +197,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      "Ni\xF1o Cuerda_0": -1847459645790862318
+      "Ni\xF1o Cuerda_1": 575930546407111311
+      "Ni\xF1o Cuerda_2": -2614216979954830430
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

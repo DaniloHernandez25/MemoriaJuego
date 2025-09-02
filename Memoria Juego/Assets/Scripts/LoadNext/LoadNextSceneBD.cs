@@ -30,7 +30,6 @@ public class LoadNextSceneBD : MonoBehaviour
 
         if (string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(urlImagen))
         {
-            Debug.LogWarning("Nombre o imagen no seleccionados.");
             return;
         }
 
@@ -93,14 +92,12 @@ public class LoadNextSceneBD : MonoBehaviour
             }
         }
 
-        Debug.Log("Datos guardados o actualizados exitosamente en CSV.");
     }
 
     private void CargarEscena()
     {
         if (sceneIndexToLoad >= 0)
         {
-            Debug.Log("Cambiando a la escena: " + sceneIndexToLoad);
             SceneManager.LoadScene(sceneIndexToLoad);
         }
     }
