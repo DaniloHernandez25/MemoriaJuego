@@ -90,7 +90,7 @@ public class NivelManager : MonoBehaviour
         for (int i = 0; i < niveles.Length; i++)
         {
             int numeroNivel = nivelInicial + i; // 👈 nivel real que representa este botón
-            bool desbloqueado = numeroNivel <= MaxNivelesCompletados || numeroNivel == nivelInicial;
+            bool desbloqueado = numeroNivel <= MaxNivelesCompletados || (MaxNivelesCompletados == 0 && numeroNivel == nivelInicial);
 
             var lvl = niveles[i];
 

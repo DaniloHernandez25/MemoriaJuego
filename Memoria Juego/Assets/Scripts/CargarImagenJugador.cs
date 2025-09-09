@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.IO;
+using UnityEngine.Networking;
 
 public class CargarImagenJugador : MonoBehaviour
 {
@@ -38,20 +39,24 @@ public class CargarImagenJugador : MonoBehaviour
         }
         else
         {
-            // Caso 2: Si es un link web (http/https)
-            using (WWW www = new WWW(ruta))
+            // Caso 2: Si es un link web (http/https) usando UnityWebRequest
+            using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(ruta))
             {
-                yield return www;
+                yield return request.SendWebRequest();
 
-                if (string.IsNullOrEmpty(www.error))
+#if UNITY_2020_1_OR_NEWER
+                if (request.result != UnityWebRequest.Result.Success)
+#else
+                if (request.isNetworkError || request.isHttpError)
+#endif
                 {
-                    Texture2D tex = www.texture;
-                    Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
-                    imagenUI.sprite = sprite;
+                    Debug.LogError("❌ Error cargando imagen desde URL: " + request.error);
                 }
                 else
                 {
-                    Debug.LogError("❌ Error cargando imagen desde URL: " + www.error);
+                    Texture2D tex = DownloadHandlerTexture.GetContent(request);
+                    Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
+                    imagenUI.sprite = sprite;
                 }
             }
         }

@@ -52,7 +52,7 @@ public class CrearPartida : MonoBehaviour
         using (StreamWriter writer = new StreamWriter(path, true)) // "true" para agregar al final del archivo
         {
             // Fases y niveles siempre serán 0 en la creación de una nueva partida
-            writer.WriteLine($"{nombre},{fecha},1,0"); // Escribir la nueva partida con valores predeterminados
+            writer.WriteLine($"{nombre},{fecha},1,1"); // Escribir la nueva partida con valores predeterminados
         }
     }
 }

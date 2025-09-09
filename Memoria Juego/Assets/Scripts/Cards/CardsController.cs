@@ -1,4 +1,4 @@
-// CardsControllerCSV.cs
+// CardsControllerCSV.cs - CORREGIDO CON NUEVA LÓGICA
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -103,12 +103,28 @@ public class CardsController : MonoBehaviour
 
     private IEnumerator GuardarProgresoEnCSV()
     {
-        string nombre    = PlayerPrefs.GetString("nombreJugador", "");
-        string fecha     = PlayerPrefs.GetString("fechaSeleccionada", "");
-        int prefNivel    = PlayerPrefs.GetInt("nivelSeleccionado", -1);
+        string nombre = PlayerPrefs.GetString("nombreJugador", "");
+        string fecha = PlayerPrefs.GetString("fechaSeleccionada", "");
+        int nivelSeleccionadoRaw = PlayerPrefs.GetInt("nivelSeleccionado", -1);
 
-        if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(fecha) || prefNivel < 0)
+        // TEMPORAL: Corregir si el nivel viene en base 0
+        int nivelCompletado;
+        if (nivelSeleccionadoRaw >= 0 && nivelSeleccionadoRaw < 10) // Asumiendo máximo 10 niveles base 0
         {
+            nivelCompletado = nivelSeleccionadoRaw + 1; // Convertir de base 0 a base 1
+            Debug.Log($"⚠️ CONVERSIÓN: Nivel raw {nivelSeleccionadoRaw} convertido a {nivelCompletado}");
+        }
+        else
+        {
+            nivelCompletado = nivelSeleccionadoRaw; // Ya está en base 1
+        }
+
+        Debug.Log($"Guardando progreso: Nombre={nombre}, Fecha={fecha}");
+        Debug.Log($"Nivel seleccionado guardado: {nivelSeleccionadoRaw}, Nivel real completado: {nivelCompletado}");
+
+        if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(fecha) || nivelCompletado < 1)
+        {
+            Debug.LogError("Datos incompletos para guardar progreso");
             yield break;
         }
 
@@ -117,37 +133,59 @@ public class CardsController : MonoBehaviour
         // Crear archivo si no existe
         if (!File.Exists(path))
         {
-            File.WriteAllText(path, "Nombre,Fecha,FasesCompletadas,NivelesCompletados\n");
+            File.WriteAllText(path, "Nombre,Fecha,Fases Completadas,Niveles Completados\n");
+            Debug.Log("Archivo CSV creado");
         }
 
         string[] lineas = File.ReadAllLines(path);
         bool encontrado = false;
 
-        for (int i = 0; i < lineas.Length; i++)
+        for (int i = 1; i < lineas.Length; i++)
         {
-            if (lineas[i].StartsWith("Nombre,")) continue;
+            if (string.IsNullOrWhiteSpace(lineas[i])) continue;
 
             string[] columnas = lineas[i].Split(',');
-            if (columnas.Length < 4) continue;
+            
+            for (int j = 0; j < columnas.Length; j++)
+            {
+                columnas[j] = columnas[j].Trim();
+            }
+
+            if (columnas.Length < 4) 
+            {
+                Debug.LogWarning($"Línea {i} tiene formato incorrecto: {lineas[i]}");
+                continue;
+            }
 
             if (columnas[0] == nombre && columnas[1] == fecha)
             {
-                // Bloqueo si nivelSeleccionado < niveles_completados
                 if (!int.TryParse(columnas[3], out int nivelesActuales))
-                    nivelesActuales = 0;
-
-                if (prefNivel < nivelesActuales)
                 {
-                    yield break;
+                    nivelesActuales = 0;
+                    Debug.LogWarning($"No se pudo parsear niveles completados, iniciando con 0");
                 }
 
-                // Incrementar niveles_completados en 1
-                nivelesActuales += 1;
-                columnas[3] = nivelesActuales.ToString();
-                lineas[i] = string.Join(",", columnas);
-                encontrado = true;
+                Debug.Log($"Niveles desbloqueados: {nivelesActuales}, Nivel que se completó: {nivelCompletado}");
 
-                NivelManager.RegistrarNivelCompletado(prefNivel);
+                // LÓGICA CORRECTA: Si completas el nivel que está desbloqueado, aumenta en 1
+                if (nivelCompletado == nivelesActuales)
+                {
+                    // Completaste el nivel disponible: aumentar progreso en 1
+                    int nuevoProgreso = nivelesActuales + 1;
+                    columnas[3] = nuevoProgreso.ToString();
+                    lineas[i] = string.Join(",", columnas);
+                    encontrado = true;
+
+                    Debug.Log($"¡Nivel completado! Progreso: {nivelesActuales} -> {nuevoProgreso}");
+                    NivelManager.RegistrarNivelCompletado(nuevoProgreso);
+                }
+                else
+                {
+                    // No es el nivel correcto para avanzar
+                    encontrado = true;
+                    Debug.Log($"Nivel {nivelCompletado} no coincide con el nivel disponible {nivelesActuales}");
+                }
+
                 break;
             }
         }
@@ -155,12 +193,23 @@ public class CardsController : MonoBehaviour
         // Si no existe registro, lo creamos
         if (!encontrado)
         {
-            string nuevaLinea = $"{nombre},{fecha},0,1"; // FasesCompletadas = 0, NivelesCompletados = 1
+            string nuevaLinea = $"{nombre},{fecha},0,{nivelCompletado}";
             List<string> lineasList = new List<string>(lineas) { nuevaLinea };
             lineas = lineasList.ToArray();
+            
+            Debug.Log($"Nuevo registro creado: {nuevaLinea}");
+            NivelManager.RegistrarNivelCompletado(nivelCompletado);
         }
 
-        File.WriteAllLines(path, lineas);
+        try
+        {
+            File.WriteAllLines(path, lineas);
+            Debug.Log($"Archivo CSV guardado exitosamente");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Error al guardar CSV: {e.Message}");
+        }
 
         yield return null;
     }
