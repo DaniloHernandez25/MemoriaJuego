@@ -140,7 +140,7 @@ public class CardsControllerHard : MonoBehaviour
 
         // TEMPORAL: Corregir si el nivel viene en base 0
         int nivelCompletado;
-        if (nivelSeleccionadoRaw >= 0 && nivelSeleccionadoRaw < 10) // Asumiendo máximo 10 niveles base 0
+        if (nivelSeleccionadoRaw >= 0 && nivelSeleccionadoRaw < 30) // Asumiendo máximo 10 niveles base 0
         {
             nivelCompletado = nivelSeleccionadoRaw + 1; // Convertir de base 0 a base 1
             Debug.Log($"⚠️ CONVERSIÓN: Nivel raw {nivelSeleccionadoRaw} convertido a {nivelCompletado}");
