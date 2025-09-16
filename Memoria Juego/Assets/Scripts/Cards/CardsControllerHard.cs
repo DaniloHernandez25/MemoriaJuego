@@ -18,6 +18,7 @@ public class CardsControllerHard : MonoBehaviour
     [SerializeField] Transform gridTransform;
     [SerializeField] private List<SpritePair> spritePairsData;
     [SerializeField] GameObject nivelCompletadoPrefab;
+    public static event System.Action OnNivelCompletado;
     [SerializeField] private bool esUltimoNivel = false;
 
     private List<Sprite> spritePool;
@@ -112,6 +113,7 @@ public class CardsControllerHard : MonoBehaviour
                             Instantiate(nivelCompletadoPrefab, canvas.transform);
 
                         // Guarda progreso
+                        OnNivelCompletado?.Invoke();
                         StartCoroutine(GuardarProgresoEnCSV());
                     });
             }

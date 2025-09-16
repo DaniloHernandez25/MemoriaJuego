@@ -11,6 +11,8 @@ public class CardsController : MonoBehaviour
     [SerializeField] Transform gridTransform;
     [SerializeField] Sprite[] sprites;
     [SerializeField] GameObject nivelCompletadoPrefab;
+    public static event System.Action OnNivelCompletado;
+
 
     [System.Serializable]
     private class NivelData
@@ -81,6 +83,7 @@ public class CardsController : MonoBehaviour
                         if (canvas != null && nivelCompletadoPrefab != null)
                             Instantiate(nivelCompletadoPrefab, canvas.transform);
 
+                        OnNivelCompletado?.Invoke();
                         StartCoroutine(GuardarProgresoEnCSV());
                     });
             }
