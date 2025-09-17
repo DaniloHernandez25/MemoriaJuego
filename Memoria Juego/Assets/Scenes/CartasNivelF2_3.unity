@@ -727,16 +727,16 @@ MonoBehaviour:
   cardPrefab: {fileID: 5908052612114250496, guid: ed72ea37e912f10439193d6aae4c8ef5, type: 3}
   gridTransform: {fileID: 1919944651}
   sprites:
-  - {fileID: -605741816, guid: 0fa6fc113f71a724a9b856aa1160b92f, type: 3}
-  - {fileID: 441077192, guid: a46c6020d6e6c8a449e01a36907b0f6b, type: 3}
-  - {fileID: -723928012, guid: a46c6020d6e6c8a449e01a36907b0f6b, type: 3}
-  - {fileID: -15851793, guid: 0fa6fc113f71a724a9b856aa1160b92f, type: 3}
-  - {fileID: -1576634844, guid: 0fa6fc113f71a724a9b856aa1160b92f, type: 3}
-  - {fileID: 136926158, guid: a46c6020d6e6c8a449e01a36907b0f6b, type: 3}
-  - {fileID: -1319291463, guid: a46c6020d6e6c8a449e01a36907b0f6b, type: 3}
-  - {fileID: 975791012, guid: 0fa6fc113f71a724a9b856aa1160b92f, type: 3}
-  - {fileID: 1945222087, guid: 0fa6fc113f71a724a9b856aa1160b92f, type: 3}
-  - {fileID: 256520812, guid: 0fa6fc113f71a724a9b856aa1160b92f, type: 3}
+  - {fileID: -2548598890106161507, guid: a2b3ba56827a356468b0e906bd8153c6, type: 3}
+  - {fileID: -226302825, guid: a2b3ba56827a356468b0e906bd8153c6, type: 3}
+  - {fileID: 57004357, guid: a2b3ba56827a356468b0e906bd8153c6, type: 3}
+  - {fileID: -1918294159, guid: a2b3ba56827a356468b0e906bd8153c6, type: 3}
+  - {fileID: 306975457, guid: a2b3ba56827a356468b0e906bd8153c6, type: 3}
+  - {fileID: 1776705625, guid: a2b3ba56827a356468b0e906bd8153c6, type: 3}
+  - {fileID: 155211786, guid: a2b3ba56827a356468b0e906bd8153c6, type: 3}
+  - {fileID: 1753791058, guid: a2b3ba56827a356468b0e906bd8153c6, type: 3}
+  - {fileID: 1571679405, guid: a2b3ba56827a356468b0e906bd8153c6, type: 3}
+  - {fileID: -542738682, guid: a2b3ba56827a356468b0e906bd8153c6, type: 3}
   nivelCompletadoPrefab: {fileID: 6319325544663108970, guid: f61baf1a64eedf14eb76b129919c4bf1, type: 3}
 --- !u!4 &523895980
 Transform:
@@ -1438,7 +1438,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\xBFQu\xE9 art\xEDculos acad\xE9micos son iguales?"
+  m_text: "\xBFQu\xE9 letras son iguales?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

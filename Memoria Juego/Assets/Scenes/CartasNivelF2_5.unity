@@ -512,16 +512,16 @@ MonoBehaviour:
   cardPrefab: {fileID: 5908052612114250496, guid: ed72ea37e912f10439193d6aae4c8ef5, type: 3}
   gridTransform: {fileID: 1919944651}
   sprites:
-  - {fileID: 693613919287904936, guid: 076c4f1c2d67e5c4ea8cfeab581fb712, type: 3}
-  - {fileID: 6554939930247002501, guid: 076c4f1c2d67e5c4ea8cfeab581fb712, type: 3}
-  - {fileID: -5389933896556044022, guid: 076c4f1c2d67e5c4ea8cfeab581fb712, type: 3}
-  - {fileID: -8191531279775850487, guid: 076c4f1c2d67e5c4ea8cfeab581fb712, type: 3}
-  - {fileID: -3212189753101041910, guid: 882194bd1c97b2d4d9512a62ea0dab07, type: 3}
-  - {fileID: 6606558722146882399, guid: 882194bd1c97b2d4d9512a62ea0dab07, type: 3}
-  - {fileID: 2157442072809328376, guid: 882194bd1c97b2d4d9512a62ea0dab07, type: 3}
-  - {fileID: -5194622274737714309, guid: 882194bd1c97b2d4d9512a62ea0dab07, type: 3}
-  - {fileID: -3996451373942859132, guid: 882194bd1c97b2d4d9512a62ea0dab07, type: 3}
-  - {fileID: 2084533427346075723, guid: 882194bd1c97b2d4d9512a62ea0dab07, type: 3}
+  - {fileID: -2888039117873940984, guid: 4b43fe867884c7d4ba1b882b068ed269, type: 3}
+  - {fileID: 1787609876, guid: 4b43fe867884c7d4ba1b882b068ed269, type: 3}
+  - {fileID: -647312194, guid: 4b43fe867884c7d4ba1b882b068ed269, type: 3}
+  - {fileID: -1506811710447734371, guid: 33f8b1c60c38b5149a64b4e783f42a0e, type: 3}
+  - {fileID: -5836853948109560349, guid: bae38d93aed7cf044be54feb6f12608a, type: 3}
+  - {fileID: 6867647443833629104, guid: 18b85dccec5705644a1438be5bb6707e, type: 3}
+  - {fileID: -317665209492319065, guid: 93f14228d53cc7a4c8846845e932b255, type: 3}
+  - {fileID: 5930250862259236602, guid: 8db4f926aa7c61b4f977091965895d5d, type: 3}
+  - {fileID: 7174813340079975887, guid: 88d987c76c42a354a86e8cc4c5d90fa7, type: 3}
+  - {fileID: -5741365384934178710, guid: c4212f33be6ecc449845fa6c9a0c0fc3, type: 3}
   nivelCompletadoPrefab: {fileID: 6319325544663108970, guid: f61baf1a64eedf14eb76b129919c4bf1, type: 3}
 --- !u!4 &523895980
 Transform:
@@ -1507,7 +1507,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\xBFQu\xE9 instrumentos acad\xE9micos son iguales?"
+  m_text: "\xBFQu\xE9 letras y silabas son iguales?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

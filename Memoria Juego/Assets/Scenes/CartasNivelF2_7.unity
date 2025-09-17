@@ -494,34 +494,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 523895978}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3eb977b976f2ccc41bf7de98eb231347, type: 3}
+  m_Script: {fileID: 11500000, guid: 84cf45b44b57d36489ffcc013d857407, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  cardPrefab: {fileID: 2043704529116806082, guid: db4755abd86c08244a726397f9c7a8fa, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::CardsController
+  cardPrefab: {fileID: 5908052612114250496, guid: ed72ea37e912f10439193d6aae4c8ef5, type: 3}
   gridTransform: {fileID: 1919944651}
-  spritePairsData:
-  - spriteA: {fileID: -487472808, guid: 126db384c5b08fa4ab5b99c0f2710090, type: 3}
-    spriteB: {fileID: -1625657537, guid: 126db384c5b08fa4ab5b99c0f2710090, type: 3}
-  - spriteA: {fileID: -2097698862, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-    spriteB: {fileID: 2127234951, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-  - spriteA: {fileID: 292886052, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-    spriteB: {fileID: 318026511, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-  - spriteA: {fileID: -974884492, guid: 8c43482d01b7ba4489a1df55d26859fc, type: 3}
-    spriteB: {fileID: 622385357, guid: 126db384c5b08fa4ab5b99c0f2710090, type: 3}
-  - spriteA: {fileID: -1847459645790862318, guid: 293df3f35274eb345b00f1f8b531d14b, type: 3}
-    spriteB: {fileID: -2614216979954830430, guid: 293df3f35274eb345b00f1f8b531d14b, type: 3}
-  - spriteA: {fileID: 6882424873531514068, guid: c88723651b40e6640aa1527ccb0fb33b, type: 3}
-    spriteB: {fileID: 7967816411513677360, guid: c88723651b40e6640aa1527ccb0fb33b, type: 3}
-  - spriteA: {fileID: 1339017417, guid: 9aab18d000c607240a598e8dd3e12042, type: 3}
-    spriteB: {fileID: -1818105740, guid: 9aab18d000c607240a598e8dd3e12042, type: 3}
-  - spriteA: {fileID: 955290976, guid: 0b3543fe310c6d242a0b277d44c616a6, type: 3}
-    spriteB: {fileID: -1842366346, guid: 0b3543fe310c6d242a0b277d44c616a6, type: 3}
-  - spriteA: {fileID: 1414554631, guid: 3bd16f9ee9de95c4fa5607928b6f39c5, type: 3}
-    spriteB: {fileID: -329567237, guid: 3bd16f9ee9de95c4fa5607928b6f39c5, type: 3}
-  - spriteA: {fileID: 694721844, guid: b170f7fcbac238b41b45b36082616744, type: 3}
-    spriteB: {fileID: -494831966, guid: b170f7fcbac238b41b45b36082616744, type: 3}
+  sprites:
+  - {fileID: -8269054504896523677, guid: 9beed954c97defe4fbe33cd917d391bd, type: 3}
+  - {fileID: -2779314776172043387, guid: 9beed954c97defe4fbe33cd917d391bd, type: 3}
+  - {fileID: 7808441475625075232, guid: 9beed954c97defe4fbe33cd917d391bd, type: 3}
+  - {fileID: -1143059935476134186, guid: 9beed954c97defe4fbe33cd917d391bd, type: 3}
+  - {fileID: 635870160705922695, guid: 9beed954c97defe4fbe33cd917d391bd, type: 3}
+  - {fileID: 1857486980314534931, guid: 9beed954c97defe4fbe33cd917d391bd, type: 3}
+  - {fileID: 8235297242181794909, guid: 9beed954c97defe4fbe33cd917d391bd, type: 3}
+  - {fileID: 1470053625125894624, guid: 9beed954c97defe4fbe33cd917d391bd, type: 3}
+  - {fileID: 7945027876870375190, guid: 9beed954c97defe4fbe33cd917d391bd, type: 3}
+  - {fileID: 607818437780495355, guid: 9beed954c97defe4fbe33cd917d391bd, type: 3}
   nivelCompletadoPrefab: {fileID: 6319325544663108970, guid: f61baf1a64eedf14eb76b129919c4bf1, type: 3}
-  esUltimoNivel: 0
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,7 +1325,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000040054, y: 0}
+  m_AnchoredPosition: {x: -0.000040054, y: 12}
   m_SizeDelta: {x: 242.0238, y: 76.2649}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1571996197
@@ -1359,7 +1348,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Encuentra las acciones
+  m_text: "\xBFQu\xE9 n\xFAmeros son iguales?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

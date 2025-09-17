@@ -378,26 +378,26 @@ MonoBehaviour:
   cardPrefab: {fileID: 2043704529116806082, guid: db4755abd86c08244a726397f9c7a8fa, type: 3}
   gridTransform: {fileID: 1919944651}
   spritePairsData:
-  - spriteA: {fileID: -4974717406940055598, guid: d80f9818690ce344abf59ac9bf1e8361, type: 3}
-    spriteB: {fileID: -4574848169579799857, guid: 94d37be317257c04092e761440606fc2, type: 3}
-  - spriteA: {fileID: 6095408203543903260, guid: 8352e05721c750d4e8d683a93de74c0a, type: 3}
-    spriteB: {fileID: 1596060280792314727, guid: d827c075078a9c14194f65c9f641f4c9, type: 3}
-  - spriteA: {fileID: -8936332244527558761, guid: d27c12477b7346546a4227c93d5b28ac, type: 3}
-    spriteB: {fileID: 1845484151895391731, guid: 6ff5ce9338ab39646bf647f7e0142f2b, type: 3}
-  - spriteA: {fileID: -3574529632529226474, guid: b1d5e33917c81824993b745225ad5016, type: 3}
-    spriteB: {fileID: 4188769456520620209, guid: 02396784362d7964a9ac1ffdf493d5ea, type: 3}
-  - spriteA: {fileID: 5984942190468318610, guid: 1c64c08c651e59f49b38fd17709a0654, type: 3}
-    spriteB: {fileID: -8169191417261495888, guid: 24a85538fa417d24cb56f22749af19a2, type: 3}
-  - spriteA: {fileID: -3732002218159088112, guid: d847c8dc7a533e44084993d8c4a57e50, type: 3}
-    spriteB: {fileID: -4613604753705151564, guid: 49d217f15dd73d84d9e7ce4ae5709cc2, type: 3}
-  - spriteA: {fileID: 1888792923, guid: f50653c471842f84f9bb059aecad7fd7, type: 3}
-    spriteB: {fileID: 1023796444, guid: f50653c471842f84f9bb059aecad7fd7, type: 3}
-  - spriteA: {fileID: -308862713, guid: a541d3288a5856a449990eb4564769f1, type: 3}
-    spriteB: {fileID: -644187473, guid: a541d3288a5856a449990eb4564769f1, type: 3}
-  - spriteA: {fileID: 1869009735, guid: 8938d455e393e0248818098621e51f51, type: 3}
-    spriteB: {fileID: 1877667821, guid: 8938d455e393e0248818098621e51f51, type: 3}
-  - spriteA: {fileID: -3732002218159088112, guid: d847c8dc7a533e44084993d8c4a57e50, type: 3}
-    spriteB: {fileID: -4613604753705151564, guid: 49d217f15dd73d84d9e7ce4ae5709cc2, type: 3}
+  - spriteA: {fileID: -7394490478910795541, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+    spriteB: {fileID: -7394490478910795541, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+  - spriteA: {fileID: 4016822112164806740, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+    spriteB: {fileID: 4016822112164806740, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+  - spriteA: {fileID: -1967381453044854831, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+    spriteB: {fileID: -1967381453044854831, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+  - spriteA: {fileID: 5361730798142365761, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+    spriteB: {fileID: 5361730798142365761, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+  - spriteA: {fileID: 5139252335731872621, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+    spriteB: {fileID: 5139252335731872621, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+  - spriteA: {fileID: 1001622455998647191, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+    spriteB: {fileID: 1001622455998647191, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+  - spriteA: {fileID: -775984034878617066, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+    spriteB: {fileID: -775984034878617066, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+  - spriteA: {fileID: 2940723823205486553, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+    spriteB: {fileID: 2940723823205486553, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+  - spriteA: {fileID: -8826147162865415591, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+    spriteB: {fileID: -8826147162865415591, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+  - spriteA: {fileID: -6274918018554034589, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
+    spriteB: {fileID: -6274918018554034589, guid: a317e43c94d6ce946a3c7cb0d13d30e3, type: 3}
   nivelCompletadoPrefab: {fileID: 6319325544663108970, guid: f61baf1a64eedf14eb76b129919c4bf1, type: 3}
   esUltimoNivel: 1
 --- !u!1 &619394800
@@ -1225,7 +1225,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Encuentra los objetos de las im\xE1genes"
+  m_text: "\xBFQu\xE9 n\xFAmeros son iguales?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1252,8 +1252,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27
-  m_fontSizeBase: 27
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

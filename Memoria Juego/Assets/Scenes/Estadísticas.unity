@@ -767,6 +767,7 @@ MonoBehaviour:
   contentFases: {fileID: 598719543}
   contentNiveles: {fileID: 1588125061}
   botonVolver: {fileID: 1324806913}
+  mensajeNoPartidasPrefab: {fileID: 6319325544663108970, guid: d67ca48563d9ff041971d3cf06bf7b64, type: 3}
 --- !u!1 &502416101
 GameObject:
   m_ObjectHideFlags: 0

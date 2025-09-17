@@ -557,16 +557,16 @@ MonoBehaviour:
   cardPrefab: {fileID: 5908052612114250496, guid: ed72ea37e912f10439193d6aae4c8ef5, type: 3}
   gridTransform: {fileID: 1919944651}
   sprites:
-  - {fileID: -6177299327261986840, guid: c139e0e186bfc114e96370362ac03dac, type: 3}
-  - {fileID: 6575898021045532436, guid: 5c61e7a3e26fb03469d22e55778326b7, type: 3}
-  - {fileID: 1265289590369343454, guid: 14c4dcf7c0f62a442b608b7cd1b7ca5a, type: 3}
-  - {fileID: -6506641628533284411, guid: bb89142e0d9309347a4a2c90d40b62fe, type: 3}
-  - {fileID: -3212189753101041910, guid: 0baebd2b917e8ee49890ac59935890aa, type: 3}
-  - {fileID: 6606558722146882399, guid: 0baebd2b917e8ee49890ac59935890aa, type: 3}
-  - {fileID: 2157442072809328376, guid: 0baebd2b917e8ee49890ac59935890aa, type: 3}
-  - {fileID: -5194622274737714309, guid: 0baebd2b917e8ee49890ac59935890aa, type: 3}
-  - {fileID: -3996451373942859132, guid: 0baebd2b917e8ee49890ac59935890aa, type: 3}
-  - {fileID: 2084533427346075723, guid: 0baebd2b917e8ee49890ac59935890aa, type: 3}
+  - {fileID: -2933884795630111732, guid: f4d1188d135146c4ca7f17f2f5714c65, type: 3}
+  - {fileID: 5567991056731304048, guid: f4d1188d135146c4ca7f17f2f5714c65, type: 3}
+  - {fileID: -522986257072798937, guid: f4d1188d135146c4ca7f17f2f5714c65, type: 3}
+  - {fileID: -5285453845933195095, guid: f4d1188d135146c4ca7f17f2f5714c65, type: 3}
+  - {fileID: -5451239602666702282, guid: f4d1188d135146c4ca7f17f2f5714c65, type: 3}
+  - {fileID: 7547315975386451303, guid: f4d1188d135146c4ca7f17f2f5714c65, type: 3}
+  - {fileID: 8332323396855308716, guid: f4d1188d135146c4ca7f17f2f5714c65, type: 3}
+  - {fileID: 4481636234445564853, guid: f4d1188d135146c4ca7f17f2f5714c65, type: 3}
+  - {fileID: -7818496257731504837, guid: f4d1188d135146c4ca7f17f2f5714c65, type: 3}
+  - {fileID: -4624191260696732573, guid: f4d1188d135146c4ca7f17f2f5714c65, type: 3}
   nivelCompletadoPrefab: {fileID: 6319325544663108970, guid: f61baf1a64eedf14eb76b129919c4bf1, type: 3}
 --- !u!4 &523895980
 Transform:
@@ -1173,7 +1173,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000040054, y: 24}
+  m_AnchoredPosition: {x: -0.000040054, y: 12}
   m_SizeDelta: {x: 242.0238, y: 76.2649}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1000492209
@@ -1196,7 +1196,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\xBFQu\xE9 figuras geom\xE9tricas son iguales?"
+  m_text: "\xBFQu\xE9 n\xFAmeros son iguales?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

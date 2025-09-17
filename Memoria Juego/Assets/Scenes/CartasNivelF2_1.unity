@@ -364,16 +364,16 @@ MonoBehaviour:
   cardPrefab: {fileID: 5908052612114250496, guid: ed72ea37e912f10439193d6aae4c8ef5, type: 3}
   gridTransform: {fileID: 1919944651}
   sprites:
-  - {fileID: 3399957122028413629, guid: 37d33a9b7b97ff74b87c323c0708d3d1, type: 3}
-  - {fileID: 5679451164114769696, guid: 37d33a9b7b97ff74b87c323c0708d3d1, type: 3}
-  - {fileID: 363941371061853465, guid: 37d33a9b7b97ff74b87c323c0708d3d1, type: 3}
-  - {fileID: 4387881637851272021, guid: 1a6f8312405c13f4ca039aed71a8bcd1, type: 3}
-  - {fileID: -8769437773788707743, guid: 1a6f8312405c13f4ca039aed71a8bcd1, type: 3}
-  - {fileID: 2083135732016344466, guid: 1a6f8312405c13f4ca039aed71a8bcd1, type: 3}
-  - {fileID: -3843622080767901209, guid: 1a6f8312405c13f4ca039aed71a8bcd1, type: 3}
-  - {fileID: 579424735734166656, guid: 1a6f8312405c13f4ca039aed71a8bcd1, type: 3}
-  - {fileID: -1115789843211121426, guid: 1a6f8312405c13f4ca039aed71a8bcd1, type: 3}
-  - {fileID: 6212701185234262841, guid: 1a6f8312405c13f4ca039aed71a8bcd1, type: 3}
+  - {fileID: 1340879807, guid: 593581d3b6f21dc4fac019c94e2111a1, type: 3}
+  - {fileID: -2888039117873940984, guid: 593581d3b6f21dc4fac019c94e2111a1, type: 3}
+  - {fileID: 814349279, guid: 593581d3b6f21dc4fac019c94e2111a1, type: 3}
+  - {fileID: -401273777, guid: 593581d3b6f21dc4fac019c94e2111a1, type: 3}
+  - {fileID: 521009348, guid: 593581d3b6f21dc4fac019c94e2111a1, type: 3}
+  - {fileID: -304905940, guid: 593581d3b6f21dc4fac019c94e2111a1, type: 3}
+  - {fileID: -527304249, guid: 593581d3b6f21dc4fac019c94e2111a1, type: 3}
+  - {fileID: -45039014, guid: 593581d3b6f21dc4fac019c94e2111a1, type: 3}
+  - {fileID: 1499368479, guid: 593581d3b6f21dc4fac019c94e2111a1, type: 3}
+  - {fileID: 2046901626, guid: 593581d3b6f21dc4fac019c94e2111a1, type: 3}
   nivelCompletadoPrefab: {fileID: 6319325544663108970, guid: f61baf1a64eedf14eb76b129919c4bf1, type: 3}
 --- !u!4 &523895980
 Transform:
@@ -1214,7 +1214,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\xBFQu\xE9 frutas son iguales?"
+  m_text: "\xBFQu\xE9 letras son iguales?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

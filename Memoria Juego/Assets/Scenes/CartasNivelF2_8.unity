@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Encuentra las acciones
+  m_text: "\xBFQu\xE9 n\xFAmeros son iguales?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -433,34 +433,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 523895978}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3eb977b976f2ccc41bf7de98eb231347, type: 3}
+  m_Script: {fileID: 11500000, guid: 84cf45b44b57d36489ffcc013d857407, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  cardPrefab: {fileID: 2043704529116806082, guid: db4755abd86c08244a726397f9c7a8fa, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::CardsController
+  cardPrefab: {fileID: 5908052612114250496, guid: ed72ea37e912f10439193d6aae4c8ef5, type: 3}
   gridTransform: {fileID: 1919944651}
-  spritePairsData:
-  - spriteA: {fileID: -3102891360146786819, guid: bcf087765edd16040b3fbd1ab8340ecc, type: 3}
-    spriteB: {fileID: -3693218351866499856, guid: bcf087765edd16040b3fbd1ab8340ecc, type: 3}
-  - spriteA: {fileID: 7564666141806152379, guid: 1dca58992912cb04790d237c7303f95a, type: 3}
-    spriteB: {fileID: 9202629945175120106, guid: ac2c344d145710841a8249edb65ab607, type: 3}
-  - spriteA: {fileID: -3040648063817340898, guid: 640eafc85ef396948ad8516ad57ab002, type: 3}
-    spriteB: {fileID: -4390321442151707430, guid: 640eafc85ef396948ad8516ad57ab002, type: 3}
-  - spriteA: {fileID: 6900542514255930352, guid: 177b3d72f242c7d4ebc9ebe8085ec037, type: 3}
-    spriteB: {fileID: 2102646988880147946, guid: 246a88228f61f4242b3f448d55daf31f, type: 3}
-  - spriteA: {fileID: -2627217306978161925, guid: fda5f62250ac0a1448f2868e2a250f28, type: 3}
-    spriteB: {fileID: 6263669495374876156, guid: fda5f62250ac0a1448f2868e2a250f28, type: 3}
-  - spriteA: {fileID: -45131135, guid: 8d30238490043364cba71008f58c0c63, type: 3}
-    spriteB: {fileID: 1731496358, guid: 8d30238490043364cba71008f58c0c63, type: 3}
-  - spriteA: {fileID: -303280399, guid: fc909824743d47e49bfdc84fc66a8faf, type: 3}
-    spriteB: {fileID: 908663763, guid: fc909824743d47e49bfdc84fc66a8faf, type: 3}
-  - spriteA: {fileID: 1086747015, guid: 18f4b3007e9c5b34c88fbaa9fa7da108, type: 3}
-    spriteB: {fileID: -340149982, guid: 18f4b3007e9c5b34c88fbaa9fa7da108, type: 3}
-  - spriteA: {fileID: 1197320909, guid: 215a78720a11b0f41a86a05d253e7232, type: 3}
-    spriteB: {fileID: 1647983432, guid: 215a78720a11b0f41a86a05d253e7232, type: 3}
-  - spriteA: {fileID: -1230485329, guid: d3c8d6076f24e6749a24d0539fc1f037, type: 3}
-    spriteB: {fileID: -606379705, guid: d3c8d6076f24e6749a24d0539fc1f037, type: 3}
+  sprites:
+  - {fileID: -4720135123440029730, guid: f7cc3ab4767a201439b569f9112c76b8, type: 3}
+  - {fileID: -1947565729371057685, guid: f7cc3ab4767a201439b569f9112c76b8, type: 3}
+  - {fileID: -7715046385776436147, guid: f7cc3ab4767a201439b569f9112c76b8, type: 3}
+  - {fileID: -6355577371619453166, guid: f7cc3ab4767a201439b569f9112c76b8, type: 3}
+  - {fileID: 5690360829098057214, guid: f7cc3ab4767a201439b569f9112c76b8, type: 3}
+  - {fileID: 1275814927115573184, guid: f7cc3ab4767a201439b569f9112c76b8, type: 3}
+  - {fileID: 6857726830597726361, guid: f7cc3ab4767a201439b569f9112c76b8, type: 3}
+  - {fileID: -4563642712016688517, guid: f7cc3ab4767a201439b569f9112c76b8, type: 3}
+  - {fileID: 2187298365862470173, guid: f7cc3ab4767a201439b569f9112c76b8, type: 3}
+  - {fileID: 5519406602191779072, guid: f7cc3ab4767a201439b569f9112c76b8, type: 3}
   nivelCompletadoPrefab: {fileID: 6319325544663108970, guid: f61baf1a64eedf14eb76b129919c4bf1, type: 3}
-  esUltimoNivel: 0
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0

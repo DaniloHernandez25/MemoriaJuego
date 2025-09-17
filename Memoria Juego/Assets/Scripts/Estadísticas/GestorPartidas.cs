@@ -1,8 +1,8 @@
 using UnityEngine;
-using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,6 +24,8 @@ public class GestorPartidas : MonoBehaviour
     public Transform contentFases;             // Content del ScrollView de fases
     public Transform contentNiveles;           // Content del ScrollView de niveles
     public Button botonVolver;                 // Botón para volver al panel de partidas
+    [Header("UI Mensajes")]
+    public GameObject mensajeNoPartidasPrefab;
 
     private List<Partida> todasLasPartidas = new List<Partida>();
     private List<RegistroTiempo> todosLosTiempos = new List<RegistroTiempo>();
@@ -163,13 +165,21 @@ public class GestorPartidas : MonoBehaviour
             .Distinct()
             .OrderBy(n => n);
 
+        if (!nombresUnicos.Any())
+        {
+            // No hay partidas, mostrar mensaje durante 3 segundos
+            if (mensajeNoPartidasPrefab != null)
+            {
+                StartCoroutine(MostrarMensajeTemporal(mensajeNoPartidasPrefab, 3f));
+            }
+            return;
+        }
+
         foreach (string nombre in nombresUnicos)
         {
             string nombreCapturado = nombre;
-
             GameObject boton = Instantiate(botonNombrePrefab, contentNombres);
             boton.GetComponentInChildren<TextMeshProUGUI>().text = nombreCapturado;
-
             boton.GetComponent<Button>().onClick.RemoveAllListeners();
             boton.GetComponent<Button>().onClick.AddListener(() =>
             {
@@ -177,6 +187,15 @@ public class GestorPartidas : MonoBehaviour
             });
         }
     }
+
+    private IEnumerator MostrarMensajeTemporal(GameObject prefab, float duracion)
+    {
+        GameObject mensaje = Instantiate(prefab, panelPartidas.transform); // se instancia como hijo del panel
+        mensaje.SetActive(true);
+        yield return new WaitForSeconds(duracion);
+        Destroy(mensaje);
+    }
+
 
     void MostrarDetallesDe(string nombre)
     {
@@ -222,6 +241,12 @@ public class GestorPartidas : MonoBehaviour
         if (registroSeleccionado == null)
         {
             Debug.LogWarning($"No se encontró registro de tiempos para {nombre} en fecha {fecha}");
+            
+            // Mostrar mensaje temporal de "no se encontró registro de tiempos"
+            if (mensajeNoPartidasPrefab != null)
+            {
+                StartCoroutine(MostrarMensajeTemporal(mensajeNoPartidasPrefab, 3f));
+            }
             return;
         }
         

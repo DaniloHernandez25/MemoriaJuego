@@ -561,16 +561,16 @@ MonoBehaviour:
   cardPrefab: {fileID: 5908052612114250496, guid: ed72ea37e912f10439193d6aae4c8ef5, type: 3}
   gridTransform: {fileID: 1919944651}
   sprites:
-  - {fileID: 5677082013261191094, guid: 1e4b3b57d394d2c4dbb229e466c0dfd8, type: 3}
-  - {fileID: 6392156847538383430, guid: c9732131dd810be49bdbc363d47fbfa7, type: 3}
-  - {fileID: -1150734689268433942, guid: 65df8e65efc1a2f48a3e301ac2ca80a7, type: 3}
-  - {fileID: -328168495940089351, guid: 3607e516b7a41e145b9676f9638487a6, type: 3}
-  - {fileID: 3809729169752967548, guid: 3607e516b7a41e145b9676f9638487a6, type: 3}
-  - {fileID: 9078295755230132108, guid: 3607e516b7a41e145b9676f9638487a6, type: 3}
-  - {fileID: 8449809207166934062, guid: 3607e516b7a41e145b9676f9638487a6, type: 3}
-  - {fileID: -8625780205341682139, guid: 3607e516b7a41e145b9676f9638487a6, type: 3}
-  - {fileID: 1655855281231845263, guid: 3607e516b7a41e145b9676f9638487a6, type: 3}
-  - {fileID: 3806824214150556519, guid: 8ccc23ed6cfd64442ac4141d329b8d2d, type: 3}
+  - {fileID: 2193891603623458943, guid: ca8008600dffb13418d0208b6f9899df, type: 3}
+  - {fileID: -2022429251, guid: ca8008600dffb13418d0208b6f9899df, type: 3}
+  - {fileID: -1996652239, guid: ca8008600dffb13418d0208b6f9899df, type: 3}
+  - {fileID: -1955516820, guid: ca8008600dffb13418d0208b6f9899df, type: 3}
+  - {fileID: -1680921109, guid: ca8008600dffb13418d0208b6f9899df, type: 3}
+  - {fileID: 1924484622, guid: ca8008600dffb13418d0208b6f9899df, type: 3}
+  - {fileID: -539804539, guid: ca8008600dffb13418d0208b6f9899df, type: 3}
+  - {fileID: -2093383034, guid: ca8008600dffb13418d0208b6f9899df, type: 3}
+  - {fileID: 1662556701, guid: ca8008600dffb13418d0208b6f9899df, type: 3}
+  - {fileID: -366756778, guid: ca8008600dffb13418d0208b6f9899df, type: 3}
   nivelCompletadoPrefab: {fileID: 6319325544663108970, guid: f61baf1a64eedf14eb76b129919c4bf1, type: 3}
 --- !u!4 &523895980
 Transform:
@@ -1484,7 +1484,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\xBFQu\xE9 veh\xEDculos son iguales?"
+  m_text: "\xBFQu\xE9 letras son iguales?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
