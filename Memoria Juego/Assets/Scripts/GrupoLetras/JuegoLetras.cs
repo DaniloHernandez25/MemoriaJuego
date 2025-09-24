@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using System.IO;
 
 public class JuegoLetras : MonoBehaviour
@@ -33,6 +34,10 @@ public class JuegoLetras : MonoBehaviour
     private int aciertos = 0;
     private int aciertosNecesarios = 5;
     private bool juegoTerminado = false;
+    
+    public static event System.Action OnNivelCompletado;
+    
+    public int indiceEscenaAlGanar = -1;
 
     void Start()
     {
@@ -143,7 +148,19 @@ public class JuegoLetras : MonoBehaviour
         Instantiate(prefabGanaste, FindFirstObjectByType<Canvas>().transform, false);
         StartCoroutine(GuardarProgresoEnCSV());
         Debug.Log("🎉 ¡Ganaste el juego de letras!");
+        OnNivelCompletado?.Invoke();
+
+        // 👇 Llamar a la corutina local
+        StartCoroutine(EsperarYCargar());
+
+        IEnumerator EsperarYCargar()
+        {
+            yield return new WaitForSeconds(2f);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(indiceEscenaAlGanar);
+        }
     }
+
+
 
     private IEnumerator MostrarMensajeTemporal()
     {
@@ -157,16 +174,36 @@ public class JuegoLetras : MonoBehaviour
 
     private IEnumerator GuardarProgresoEnCSV()
     {
-        string nombre = PlayerPrefs.GetString("nombreJugador", "Jugador");
-        string fecha = PlayerPrefs.GetString("fechaSeleccionada", System.DateTime.Now.ToString("yyyy-MM-dd"));
-        int nivelSeleccionadoRaw = PlayerPrefs.GetInt("nivelSeleccionado", 0);
+        string nombre = PlayerPrefs.GetString("nombreJugador", "");
+        string fecha = PlayerPrefs.GetString("fechaSeleccionada", "");
+        int nivelSeleccionadoRaw = PlayerPrefs.GetInt("nivelSeleccionado", -1);
 
-        int nivelCompletado = nivelSeleccionadoRaw + 1;
+        int nivelCompletado;
+        if (nivelSeleccionadoRaw >= 0 && nivelSeleccionadoRaw < 30)
+        {
+            nivelCompletado = nivelSeleccionadoRaw + 1;
+            Debug.Log($"⚠️ CONVERSIÓN: Nivel raw {nivelSeleccionadoRaw} convertido a {nivelCompletado}");
+        }
+        else
+        {
+            nivelCompletado = nivelSeleccionadoRaw;
+        }
+
+        Debug.Log($"Guardando progreso: Nombre={nombre}, Fecha={fecha}, Nivel={nivelCompletado}");
+
+        if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(fecha) || nivelCompletado < 1)
+        {
+            Debug.LogError("Datos incompletos para guardar progreso en VerificarSuma");
+            yield break;
+        }
 
         string path = Application.persistentDataPath + "/progreso.csv";
 
         if (!File.Exists(path))
-            File.WriteAllText(path, "Nombre,Fecha,Niveles Completados\n");
+        {
+            File.WriteAllText(path, "Nombre,Fecha,Fases Completadas,Niveles Completados\n");
+            Debug.Log("Archivo CSV creado");
+        }
 
         string[] lineas = File.ReadAllLines(path);
         bool encontrado = false;
@@ -176,35 +213,51 @@ public class JuegoLetras : MonoBehaviour
             if (string.IsNullOrWhiteSpace(lineas[i])) continue;
 
             string[] columnas = lineas[i].Split(',');
-            if (columnas.Length < 3) continue;
+            for (int j = 0; j < columnas.Length; j++) columnas[j] = columnas[j].Trim();
+
+            if (columnas.Length < 4) continue;
 
             if (columnas[0] == nombre && columnas[1] == fecha)
             {
-                if (!int.TryParse(columnas[2], out int nivelesActuales)) nivelesActuales = 0;
-                int nuevoProgreso = Mathf.Max(nivelesActuales, nivelCompletado);
+                if (!int.TryParse(columnas[3], out int nivelesActuales)) nivelesActuales = 0;
 
-                columnas[2] = nuevoProgreso.ToString();
-                lineas[i] = string.Join(",", columnas);
-                encontrado = true;
+                if (nivelCompletado == nivelesActuales)
+                {
+                    int nuevoProgreso = nivelesActuales + 1;
+                    columnas[3] = nuevoProgreso.ToString();
+                    lineas[i] = string.Join(",", columnas);
+                    encontrado = true;
+
+                    Debug.Log($"¡Nivel completado! Progreso: {nivelesActuales} -> {nuevoProgreso}");
+                    NivelManager.RegistrarNivelCompletado(nuevoProgreso);
+                }
+                else
+                {
+                    encontrado = true;
+                    Debug.Log($"Nivel {nivelCompletado} no coincide con el disponible {nivelesActuales}");
+                }
                 break;
             }
         }
 
         if (!encontrado)
         {
-            string nuevaLinea = $"{nombre},{fecha},{nivelCompletado}";
+            string nuevaLinea = $"{nombre},{fecha},0,{nivelCompletado}";
             List<string> lineasList = new List<string>(lineas) { nuevaLinea };
             lineas = lineasList.ToArray();
+
+            Debug.Log($"Nuevo registro creado: {nuevaLinea}");
+            NivelManager.RegistrarNivelCompletado(nivelCompletado);
         }
 
         try
         {
             File.WriteAllLines(path, lineas);
-            Debug.Log("CSV guardado exitosamente ✅");
+            Debug.Log("CSV guardado exitosamente desde VerificarSuma");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Error al guardar CSV: {e.Message}");
+            Debug.LogError($"Error al guardar CSV en VerificarSuma: {e.Message}");
         }
 
         yield return null;

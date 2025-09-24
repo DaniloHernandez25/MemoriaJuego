@@ -4,6 +4,7 @@ using TMPro;
 using System.Collections.Generic;
 using System.IO;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class VerificarSuma : MonoBehaviour
 {
@@ -11,11 +12,19 @@ public class VerificarSuma : MonoBehaviour
     public Arrastrable sumaScript;                   // Referencia al script anterior
     public TextMeshProUGUI objetivoText;      // Muestra el número objetivo
     public TextMeshProUGUI aciertosText;      // Texto para mostrar aciertos
+    [Header("Contador de imágenes")]
+    public TextMeshProUGUI contadorImagenesText;
     public Transform spawnArea;               // Área donde aparecen las imágenes
     public GameObject imagenPrefab;           // Prefab de la imagen que se clona
     public Button verificarButton;            // Botón de verificar
     public GameObject ganastePrefab;          // Prefab que aparece al ganar
+    public GameObject perfectoPrefab;        // 👈 Prefab que muestra el mensaje de "Perfecto"
+    
     public GameObject intentaDeNuevoPrefab;   // 👈 Prefab que muestra el mensaje de error
+    public static event System.Action OnNivelCompletado;
+    [Header("Configuración de Escena")]
+    public int indiceEscenaAlGanar = -1;
+
 
     private int objetivoActual = 0;
     private int ultimoObjetivo = 0;
@@ -58,8 +67,11 @@ public class VerificarSuma : MonoBehaviour
             GameObject nuevaImg = Instantiate(imagenPrefab, spawnArea);
             spawnedImages.Add(nuevaImg);
         }
-    }
 
+        // 👇 Mostrar solo el número en el texto
+        if (contadorImagenesText != null)
+            contadorImagenesText.text = objetivoActual.ToString();
+    }
     void VerificarRespuesta()
     {
         if (sumaScript == null) return;
@@ -71,19 +83,32 @@ public class VerificarSuma : MonoBehaviour
             Debug.Log("✅ Acierto!");
             aciertos++;
             ActualizarAciertosText();
+            sumaScript.LimpiarSlots();
 
-            if (aciertos >= 3)
+            if (aciertos >= 5)
             {
-                // Mostrar prefab de Ganaste en el Canvas
                 Canvas canvas = FindFirstObjectByType<Canvas>();
                 Instantiate(ganastePrefab, canvas.transform, false);
-
                 Debug.Log("🎉 ¡Ganaste!");
 
+                OnNivelCompletado?.Invoke();  // 👈 Notifica al NivelTimer
                 StartCoroutine(GuardarProgresoEnCSV());
+
+                // 👇 Corutina inline usando enumerador anónimo
+                StartCoroutine(EsperarYCargar());
+
+                System.Collections.IEnumerator EsperarYCargar()
+                {
+                    yield return new WaitForSeconds(2f);
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(indiceEscenaAlGanar);
+                }
             }
+
             else
             {
+                // Mostrar mensaje "Perfecto" solo si NO ganó
+                StartCoroutine(MostrarMensajePerfecto());
+
                 // Generar nuevo objetivo
                 GenerarNuevoObjetivo();
             }
@@ -91,11 +116,20 @@ public class VerificarSuma : MonoBehaviour
         else
         {
             Debug.Log("❌ Fallo, intenta de nuevo");
-
-            // 👇 Mostrar el prefab de error por 2 segundos
             StartCoroutine(MostrarMensajeTemporal());
         }
     }
+
+    private IEnumerator MostrarMensajePerfecto()
+    {
+        Canvas canvas = FindFirstObjectByType<Canvas>();
+        GameObject mensajePerfecto = Instantiate(perfectoPrefab, canvas.transform, false);
+
+        yield return new WaitForSeconds(1f);
+
+        Destroy(mensajePerfecto);
+    }
+
 
     private IEnumerator MostrarMensajeTemporal()
     {

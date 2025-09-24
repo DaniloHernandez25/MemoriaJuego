@@ -4,6 +4,7 @@ using TMPro;
 using System.Collections.Generic;
 using System.IO;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class VerificarResta : MonoBehaviour
 {
@@ -15,8 +16,12 @@ public class VerificarResta : MonoBehaviour
     public Transform spawnArea;               
     public GameObject imagenPrefab;           
     public Button verificarButton;            
-    public GameObject ganastePrefab;          
-    public GameObject intentaDeNuevoPrefab;   // 👈 Nuevo prefab para fallo
+    public GameObject ganastePrefab;
+    public GameObject perfectoPrefab;          
+    public GameObject intentaDeNuevoPrefab;
+    public static event System.Action OnNivelCompletado;
+    [Header("Configuración de Escena")]
+    public int indiceEscenaAlGanar = -1;  
 
     private int numeroSpawn = 0;              
     private int numeroObjetivo = 0;           
@@ -27,30 +32,41 @@ public class VerificarResta : MonoBehaviour
 
     void Start()
     {
+        verificarButton.onClick.AddListener(VerificarRespuesta);
         GenerarNuevoEjercicio();
         ActualizarAciertosText();
-
-        verificarButton.onClick.AddListener(VerificarRespuesta);
     }
 
     void GenerarNuevoEjercicio()
     {
+        // Limpiar imágenes anteriores
         foreach (var img in spawnedImages)
             Destroy(img);
         spawnedImages.Clear();
 
-        numeroSpawn = Random.Range(2, 16); 
-        numeroObjetivo = Random.Range(1, numeroSpawn);
+        // Generar números
+        numeroSpawn = Random.Range(2, 16);          // Número mayor
+        numeroObjetivo = Random.Range(1, numeroSpawn);  // Número menor
         cantidadARestar = numeroSpawn - numeroObjetivo;
 
+        // Mostrar total inicial en Arrastrable
+        if (sumaScript != null)
+            sumaScript.SetInitialTotal(numeroSpawn);
+
+        // Generar imágenes
         for (int i = 0; i < numeroSpawn; i++)
         {
             GameObject nuevaImg = Instantiate(imagenPrefab, spawnArea);
             spawnedImages.Add(nuevaImg);
         }
 
+        // Actualizar textos
         if (preguntaText != null)
             preguntaText.text = $"¿Cuánto debo restar de {numeroSpawn} para tener {numeroObjetivo}?";
+
+        if (restaText != null)
+            restaText.text = "Total: " + sumaScript.GetCurrentTotal();
+
     }
 
     void VerificarRespuesta()
@@ -59,39 +75,65 @@ public class VerificarResta : MonoBehaviour
 
         int respuestaJugador = sumaScript.GetCurrentTotal();
 
-        if (respuestaJugador == cantidadARestar)
+        if (respuestaJugador == numeroObjetivo)
         {
             Debug.Log("✅ Acierto!");
             aciertos++;
             ActualizarAciertosText();
+            sumaScript.LimpiarSlots();
 
-            if (aciertos >= 3)
+            if (aciertos >= 5)
             {
                 Canvas canvas = FindFirstObjectByType<Canvas>();
                 Instantiate(ganastePrefab, canvas.transform, false);
                 Debug.Log("🎉 ¡Ganaste!");
+
+                OnNivelCompletado?.Invoke();  // 👈 Notifica al NivelTimer
                 StartCoroutine(GuardarProgresoEnCSV());
+
+                // 👇 Corutina inline usando enumerador anónimo
+                StartCoroutine(EsperarYCargar());
+
+                System.Collections.IEnumerator EsperarYCargar()
+                {
+                    yield return new WaitForSeconds(2f);
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(indiceEscenaAlGanar);
+                }
             }
+
             else
             {
+                // Mostrar Perfecto solo si no ganó
+                StartCoroutine(MostrarMensajePerfecto());
                 GenerarNuevoEjercicio();
             }
         }
         else
         {
-            Debug.Log("❌ Fallo, intenta de nuevo");
-            StartCoroutine(MostrarIntentoFallido()); // 👈 coroutine para mostrar mensaje
+            Debug.Log($"❌ Fallo, quitó {respuestaJugador} pero debía quitar {cantidadARestar}");
+            StartCoroutine(MostrarIntentoFallido());
         }
     }
+
+    private IEnumerator MostrarMensajePerfecto()
+    {
+        Canvas canvas = FindFirstObjectByType<Canvas>();
+        GameObject mensajePerfecto = Instantiate(perfectoPrefab, canvas.transform, false);
+
+        yield return new WaitForSeconds(1f);
+
+        Destroy(mensajePerfecto);
+    }
+
 
     private IEnumerator MostrarIntentoFallido()
     {
         Canvas canvas = FindFirstObjectByType<Canvas>();
         GameObject aviso = Instantiate(intentaDeNuevoPrefab, canvas.transform, false);
 
-        yield return new WaitForSeconds(2f); // ⏳ espera 2 segundos
+        yield return new WaitForSeconds(2f);
 
-        Destroy(aviso); // 🔥 elimina el prefab después de 2 seg
+        Destroy(aviso);
     }
 
     private void ActualizarAciertosText()
@@ -99,6 +141,7 @@ public class VerificarResta : MonoBehaviour
         if (aciertosText != null)
             aciertosText.text = "Aciertos: " + aciertos;
     }
+
 
     private IEnumerator GuardarProgresoEnCSV()
     {

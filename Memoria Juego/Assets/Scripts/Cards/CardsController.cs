@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.IO;
 
+
 public class CardsController : MonoBehaviour
 {
     [SerializeField] Card cardPrefab;
@@ -12,6 +13,9 @@ public class CardsController : MonoBehaviour
     [SerializeField] Sprite[] sprites;
     [SerializeField] GameObject nivelCompletadoPrefab;
     public static event System.Action OnNivelCompletado;
+    [Header("Configuración de Escena")]
+    public int indiceEscenaAlGanar = -1;
+
 
 
     [System.Serializable]
@@ -78,13 +82,17 @@ public class CardsController : MonoBehaviour
                     .ChainDelay(0.3f)
                     .ChainCallback(() =>
                     {
-                        // Mostrar popup
+                        // 1️⃣ Instanciar prefab en el canvas
                         var canvas = GameObject.Find("Canvas");
                         if (canvas != null && nivelCompletadoPrefab != null)
                             Instantiate(nivelCompletadoPrefab, canvas.transform);
 
+                        // 2️⃣ Notificar evento y guardar progreso
                         OnNivelCompletado?.Invoke();
                         StartCoroutine(GuardarProgresoEnCSV());
+
+                        // 3️⃣ Iniciar corutina que espera antes de cargar escena
+                        StartCoroutine(EsperarYCargar());
                     });
             }
         }
@@ -148,13 +156,13 @@ public class CardsController : MonoBehaviour
             if (string.IsNullOrWhiteSpace(lineas[i])) continue;
 
             string[] columnas = lineas[i].Split(',');
-            
+
             for (int j = 0; j < columnas.Length; j++)
             {
                 columnas[j] = columnas[j].Trim();
             }
 
-            if (columnas.Length < 4) 
+            if (columnas.Length < 4)
             {
                 Debug.LogWarning($"Línea {i} tiene formato incorrecto: {lineas[i]}");
                 continue;
@@ -199,7 +207,7 @@ public class CardsController : MonoBehaviour
             string nuevaLinea = $"{nombre},{fecha},0,{nivelCompletado}";
             List<string> lineasList = new List<string>(lineas) { nuevaLinea };
             lineas = lineasList.ToArray();
-            
+
             Debug.Log($"Nuevo registro creado: {nuevaLinea}");
             NivelManager.RegistrarNivelCompletado(nivelCompletado);
         }
@@ -216,4 +224,10 @@ public class CardsController : MonoBehaviour
 
         yield return null;
     }
+    private IEnumerator EsperarYCargar()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(indiceEscenaAlGanar);
+    }
+
 }

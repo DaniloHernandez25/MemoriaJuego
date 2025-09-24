@@ -20,6 +20,8 @@ public class CardsControllerHard : MonoBehaviour
     [SerializeField] GameObject nivelCompletadoPrefab;
     public static event System.Action OnNivelCompletado;
     [SerializeField] private bool esUltimoNivel = false;
+    [Header("Configuración de Escena")]
+    public int indiceEscenaAlGanar = -1;
 
     private List<Sprite> spritePool;
     private Dictionary<Sprite, Sprite> matchMap;
@@ -99,23 +101,21 @@ public class CardsControllerHard : MonoBehaviour
                 // Animación
                 PrimeTween.Sequence.Create()
                     .Chain(PrimeTween.Tween.Scale(gridTransform, Vector3.one * 1.2f, 0.2f, ease: PrimeTween.Ease.OutBack))
-                    .Chain(PrimeTween.Tween.Scale(gridTransform, Vector3.one,      0.2f, ease: PrimeTween.Ease.InOutCubic))
+                    .Chain(PrimeTween.Tween.Scale(gridTransform, Vector3.one, 0.2f, ease: PrimeTween.Ease.InOutCubic))
                     .ChainDelay(0.3f)
                     .ChainCallback(() =>
                     {
-                        // Desbloquea siguiente nivel en memoria
-                        if (LevelProgress.Instance != null)
-                            LevelProgress.Instance.DesbloquearNivel(SceneManager.GetActiveScene().buildIndex + 1);
-
-                        // Popup
                         var canvas = GameObject.Find("Canvas");
                         if (canvas != null && nivelCompletadoPrefab != null)
                             Instantiate(nivelCompletadoPrefab, canvas.transform);
 
-                        // Guarda progreso
                         OnNivelCompletado?.Invoke();
                         StartCoroutine(GuardarProgresoEnCSV());
+
+                        StartCoroutine(EsperarYCargar());
                     });
+
+
             }
         }
         else
@@ -178,13 +178,13 @@ public class CardsControllerHard : MonoBehaviour
             if (string.IsNullOrWhiteSpace(lineas[i])) continue;
 
             string[] columnas = lineas[i].Split(',');
-            
+
             for (int j = 0; j < columnas.Length; j++)
             {
                 columnas[j] = columnas[j].Trim();
             }
 
-            if (columnas.Length < 4) 
+            if (columnas.Length < 4)
             {
                 Debug.LogWarning($"Línea {i} tiene formato incorrecto: {lineas[i]}");
                 continue;
@@ -242,7 +242,7 @@ public class CardsControllerHard : MonoBehaviour
             string nuevaLinea = $"{nombre},{fecha},0,{nivelCompletado}";
             List<string> lineasList = new List<string>(lineas) { nuevaLinea };
             lineas = lineasList.ToArray();
-            
+
             Debug.Log($"Nuevo registro creado: {nuevaLinea}");
             NivelManager.RegistrarNivelCompletado(nivelCompletado);
         }
@@ -259,4 +259,10 @@ public class CardsControllerHard : MonoBehaviour
 
         yield return null;
     }
+    private IEnumerator EsperarYCargar()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(indiceEscenaAlGanar);
+    }
+
 }

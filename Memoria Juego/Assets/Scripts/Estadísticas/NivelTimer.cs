@@ -21,11 +21,21 @@ public class NivelTimer : MonoBehaviour
 
         // Suscribirse al evento del CardsController
         CardsController.OnNivelCompletado += RegistrarTiempo;
+        VerificarSuma.OnNivelCompletado += RegistrarTiempo;
+        VerificarResta.OnNivelCompletado += RegistrarTiempo;
+        VerificarSumaResta.OnNivelCompletado += RegistrarTiempo;
+        JuegoSilabas.OnNivelCompletado += RegistrarTiempo;
+        JuegoLetras.OnNivelCompletado += RegistrarTiempo;
     }
 
     private void OnDestroy()
     {
         CardsController.OnNivelCompletado -= RegistrarTiempo;
+        VerificarSuma.OnNivelCompletado -= RegistrarTiempo;
+        VerificarResta.OnNivelCompletado -= RegistrarTiempo;
+        VerificarSumaResta.OnNivelCompletado -= RegistrarTiempo;
+        JuegoSilabas.OnNivelCompletado -= RegistrarTiempo;
+        JuegoLetras.OnNivelCompletado -= RegistrarTiempo;
     }
 
     void RegistrarTiempo()

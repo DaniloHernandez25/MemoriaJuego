@@ -96,7 +96,10 @@ public class NivelManager : MonoBehaviour
 
             lvl.button.interactable = desbloqueado;
             lvl.bgImage.sprite = desbloqueado ? unlockedSprite : lockedSprite;
-            lvl.bgImage.SetNativeSize();
+            RectTransform imageRect = lvl.bgImage.GetComponent<RectTransform>();
+            RectTransform buttonRect = lvl.button.GetComponent<RectTransform>();
+
+            imageRect.sizeDelta = buttonRect.sizeDelta; // Ajusta la imagen al tamaño del botón
 
             if (lvl.label != null)
             {
