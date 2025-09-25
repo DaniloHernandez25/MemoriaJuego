@@ -601,26 +601,26 @@ MonoBehaviour:
   cardPrefab: {fileID: 2043704529116806082, guid: db4755abd86c08244a726397f9c7a8fa, type: 3}
   gridTransform: {fileID: 1745501914}
   spritePairsData:
-  - spriteA: {fileID: 3269279359094584176, guid: 8c67a641c5868df4fbab70a03262b950, type: 3}
-    spriteB: {fileID: 8651959286884340702, guid: ac69a5270d808614a9062a0455116b50, type: 3}
-  - spriteA: {fileID: 416638882927457189, guid: 88d0d16babdc829458ea015a46afb0ad, type: 3}
-    spriteB: {fileID: -9205468913714799227, guid: 1735528d9bfaf6446bc105234c28469f, type: 3}
-  - spriteA: {fileID: -7880737503968695313, guid: 3e63ff1eefe64b74b98f907b02f790da, type: 3}
-    spriteB: {fileID: 576113614713272206, guid: 473b8230027f26649b1287fd15f39bd4, type: 3}
-  - spriteA: {fileID: 4018212998447200724, guid: 3ff51cd73be56f643aaa88f6dda543eb, type: 3}
-    spriteB: {fileID: 453801198523561737, guid: b15a5399a752087459a591f6450db641, type: 3}
-  - spriteA: {fileID: -265067896550597197, guid: 298968676f510bf4f9f757dff92f4147, type: 3}
-    spriteB: {fileID: 6141642975765306960, guid: a9cc1a1835116c143a24c66c1681189b, type: 3}
-  - spriteA: {fileID: -7255346522512326766, guid: 91c3a51d43c4e6b41825883627cf7c06, type: 3}
-    spriteB: {fileID: 3174662712899261568, guid: c8a6d3b4fbc7afc4c988ba882e120559, type: 3}
-  - spriteA: {fileID: 1540118488, guid: 268b24714650eb04a901b04a302f10df, type: 3}
-    spriteB: {fileID: -1496915804, guid: 268b24714650eb04a901b04a302f10df, type: 3}
-  - spriteA: {fileID: -1049934761, guid: 940fc80aeaeed28429fa282e27bc8c68, type: 3}
-    spriteB: {fileID: 2074436659, guid: 940fc80aeaeed28429fa282e27bc8c68, type: 3}
-  - spriteA: {fileID: -1715500180, guid: 940fc80aeaeed28429fa282e27bc8c68, type: 3}
-    spriteB: {fileID: -1054007947, guid: 940fc80aeaeed28429fa282e27bc8c68, type: 3}
-  - spriteA: {fileID: -1031566507, guid: 8745330e19cafb648add3ece7e771c65, type: 3}
-    spriteB: {fileID: -1615180675, guid: 8745330e19cafb648add3ece7e771c65, type: 3}
+  - spriteA: {fileID: 6080423308379047265, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+    spriteB: {fileID: 6080423308379047265, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+  - spriteA: {fileID: -4920005215779224819, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+    spriteB: {fileID: -4920005215779224819, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+  - spriteA: {fileID: -5041856178777033746, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+    spriteB: {fileID: -5041856178777033746, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+  - spriteA: {fileID: 5231899745694387511, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+    spriteB: {fileID: 5231899745694387511, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+  - spriteA: {fileID: 8248347208099138673, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+    spriteB: {fileID: 8248347208099138673, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+  - spriteA: {fileID: -6529450929804337734, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+    spriteB: {fileID: -6529450929804337734, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+  - spriteA: {fileID: -6759029266942019221, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+    spriteB: {fileID: -6759029266942019221, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+  - spriteA: {fileID: 4073416760356578826, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+    spriteB: {fileID: 4073416760356578826, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+  - spriteA: {fileID: -8495913177146420334, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+    spriteB: {fileID: -8495913177146420334, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+  - spriteA: {fileID: 1142509797508070903, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
+    spriteB: {fileID: 1142509797508070903, guid: dc4b7bfd29e702c4694a4c2edb2b6572, type: 3}
   nivelCompletadoPrefab: {fileID: 6319325544663108970, guid: f61baf1a64eedf14eb76b129919c4bf1, type: 3}
   esUltimoNivel: 0
   indiceEscenaAlGanar: 17
@@ -1398,8 +1398,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 242.48997, y: 181.69995}
-  m_SizeDelta: {x: -767.07, y: -409.6}
+  m_AnchoredPosition: {x: 250.51248, y: 181.69995}
+  m_SizeDelta: {x: -751.02496, y: -409.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1587545252
 MonoBehaviour:

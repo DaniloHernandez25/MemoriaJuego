@@ -10,7 +10,7 @@ public class UIScaler : MonoBehaviour
     private void Awake()
     {
         // Solo permitir una instancia (evita duplicados en DontDestroyOnLoad)
-        if (FindObjectsOfType<UIScaler>().Length > 1)
+        if (Object.FindObjectsByType<UIScaler>(FindObjectsSortMode.None).Length > 1)
         {
             Destroy(gameObject);
             return;
@@ -37,7 +37,8 @@ public class UIScaler : MonoBehaviour
 
     void AjustarEscala()
     {
-        CanvasScaler[] escaladores = FindObjectsOfType<CanvasScaler>();
+        // Reemplaza la búsqueda de CanvasScaler
+        CanvasScaler[] escaladores = Object.FindObjectsByType<CanvasScaler>(FindObjectsSortMode.None);
 
         foreach (CanvasScaler scaler in escaladores)
         {
