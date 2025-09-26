@@ -239,12 +239,7 @@ public class CardsControllerHard : MonoBehaviour
         // Si no existe registro, lo creamos
         if (!encontrado)
         {
-            string nuevaLinea = $"{nombre},{fecha},0,{nivelCompletado}";
-            List<string> lineasList = new List<string>(lineas) { nuevaLinea };
-            lineas = lineasList.ToArray();
-
-            Debug.Log($"Nuevo registro creado: {nuevaLinea}");
-            NivelManager.RegistrarNivelCompletado(nivelCompletado);
+            Debug.Log("No se encontró registro existente, creando uno nuevo");
         }
 
         try
