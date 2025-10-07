@@ -45,7 +45,11 @@ public class NivelTimer : MonoBehaviour
         if (nivelCompletado) return;
         nivelCompletado = true;
 
-        float tiempoTranscurrido = Time.time - tiempoInicio;
+        float tiempoTranscurridoSegundos = Time.time - tiempoInicio;
+
+        // Convertir a minutos
+        float tiempoTranscurridoMinutos = tiempoTranscurridoSegundos / 60f;
+
         string nombre = PlayerPrefs.GetString("nombreJugador", "Jugador");
         string fecha = PlayerPrefs.GetString("fechaSeleccionada", System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
@@ -75,7 +79,7 @@ public class NivelTimer : MonoBehaviour
             }
         }
 
-        // Si no existe fila, crear nueva con todas las columnas vacías excepto nombre y fecha
+        // Si no existe fila, crear nueva
         if (filaIndex == -1)
         {
             string[] nuevasColumnas = new string[2 + 30]; // 30 niveles (10 x 3 fases)
@@ -86,17 +90,17 @@ public class NivelTimer : MonoBehaviour
             filaIndex = lineasList.Count - 1;
         }
 
-        // Actualizar la columna correspondiente
+        // Actualizar la columna correspondiente con minutos
         string[] fila = lineasList[filaIndex].Split(',');
-        int columna = 2 + (numeroFase - 1) * 10 + (numeroNivel - 1); // índice correcto en la fila
-        fila[columna] = tiempoTranscurrido.ToString("F2", CultureInfo.InvariantCulture);
+        int columna = 2 + (numeroFase - 1) * 10 + (numeroNivel - 1);
+        fila[columna] = tiempoTranscurridoMinutos.ToString("F2", CultureInfo.InvariantCulture);
 
         lineasList[filaIndex] = string.Join(",", fila);
 
         try
         {
             File.WriteAllLines(filePath, lineasList);
-            Debug.Log($"Tiempo registrado en {fila[columna]} para {nombre} - {fecha}");
+            Debug.Log($"Tiempo registrado en {fila[columna]} minutos para {nombre} - {fecha}");
         }
         catch (System.Exception e)
         {

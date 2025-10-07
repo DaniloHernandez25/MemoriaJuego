@@ -1,45 +1,38 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.IO;
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
-public class GestorPartidas : MonoBehaviour
+public class GestorPartidasFiltro : MonoBehaviour
 {
-    [Header("UI Paneles")]
-    public GameObject panelPartidas;           // Panel que contiene los ScrollViews de nombres y contenido
-    public GameObject panelNivelesTiempo;      // Panel que contiene los ScrollViews de fases y niveles
-    
-    [Header("UI Partidas")]
-    public GameObject botonNombrePrefab;       // Prefab con botón y texto para nombre
-    public GameObject filaDetallePrefab;       // Prefab con texto para cada partida (ahora botón)
-    public Transform contentNombres;           // Content del ScrollView de nombres
-    public Transform contentDetalles;          // Content del ScrollView de detalles
-    
-    [Header("UI Niveles y Tiempos")]
-    public GameObject botonFasePrefab;         // Prefab para botones de fases
-    public GameObject filaNivelPrefab;         // Prefab para mostrar nivel y tiempo
-    public Transform contentFases;             // Content del ScrollView de fases
-    public Transform contentNiveles;           // Content del ScrollView de niveles
-    public Button botonVolver;                 // Botón para volver al panel de partidas
-    [Header("UI Mensajes")]
-    public GameObject mensajeNoPartidasPrefab;
+    [Header("Canvas")]
+    public GameObject panelBusqueda;
+    public GameObject panelResultados;
 
-    private List<Partida> todasLasPartidas = new List<Partida>();
+    [Header("Botones")]
+    public Button botonVolver;
+
+    [Header("UI Búsqueda")]
+    public TMP_Dropdown dropdownNombre;
+    public TMP_Dropdown dropdownFechaInicio;
+    public TMP_Dropdown dropdownFechaFin;
+    public TMP_Dropdown dropdownFase;
+    public Button botonBuscar;
+
+    [Header("UI Tabla Resultados")]
+    public Transform tablaContenido;
+    public GameObject filaPrefab;
+
+    [Header("UI Resultados")]
+    public GameObject prefabSinRegistro;
+    public Transform spawnPrefabSinRegistro; // Lugar donde se instanciará sobresaliendo
+
     private List<RegistroTiempo> todosLosTiempos = new List<RegistroTiempo>();
-    private RegistroTiempo registroSeleccionado;
+    private List<string> todosLosNombres = new List<string>();
 
-    [System.Serializable]
-    public class Partida
-    {
-        public string nombre;
-        public string fecha;
-        public int fases;
-        public int niveles;
-    }
-    
     [System.Serializable]
     public class RegistroTiempo
     {
@@ -50,282 +43,219 @@ public class GestorPartidas : MonoBehaviour
 
     void Start()
     {
-        CargarDatosDesdeCSV();
         CargarTiemposDesdeCSV();
-        MostrarNombresUnicos();
-        ConfigurarBotonVolver();
-        
-        // Mostrar panel de partidas por defecto
-        MostrarPanelPartidas();
+        InicializarDropdownNombres();
+        InicializarDropdownFases();
+
+        dropdownNombre.onValueChanged.AddListener(delegate { ActualizarFechasPorNombre(); });
+
+        if (botonBuscar != null)
+            botonBuscar.onClick.AddListener(EjecutarBusqueda);
+
+        if (botonVolver != null)
+            botonVolver.onClick.AddListener(VolverPanelBusqueda);
+
+        MostrarPanelBusqueda();
     }
 
-    void CargarDatosDesdeCSV()
-    {
-        string path = Application.persistentDataPath + "/progreso.csv";
-
-        if (!File.Exists(path))
-        {
-            return;
-        }
-
-        todasLasPartidas.Clear();
-
-        using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-        using (StreamReader reader = new StreamReader(fs))
-        {
-            bool primeraLinea = true;
-
-            while (!reader.EndOfStream)
-            {
-                string linea = reader.ReadLine();
-
-                if (primeraLinea)
-                {
-                    primeraLinea = false;
-                    continue;
-                }
-
-                string[] columnas = linea.Split(',');
-                if (columnas.Length < 4) continue;
-
-                Partida p = new Partida
-                {
-                    nombre = columnas[0].Trim().Replace("\uFEFF", ""),
-                    fecha = columnas[1],
-                    fases = int.TryParse(columnas[2], out int f) ? f : 0,
-                    niveles = int.TryParse(columnas[3], out int n) ? n : 0
-                };
-
-                todasLasPartidas.Add(p);
-            }
-        }
-    }
-    
     void CargarTiemposDesdeCSV()
     {
         string path = Application.persistentDataPath + "/progreso_tiempos.csv";
-
-        if (!File.Exists(path))
-        {
-            return;
-        }
+        if (!File.Exists(path)) return;
 
         todosLosTiempos.Clear();
+        todosLosNombres.Clear();
 
-        using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-        using (StreamReader reader = new StreamReader(fs))
+        string[] lineas;
+        using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+        using (var sr = new StreamReader(fs))
         {
-            string[] headers = null;
-            bool primeraLinea = true;
-
-            while (!reader.EndOfStream)
-            {
-                string linea = reader.ReadLine();
-
-                if (primeraLinea)
-                {
-                    headers = linea.Split(',');
-                    primeraLinea = false;
-                    continue;
-                }
-
-                string[] columnas = linea.Split(',');
-                if (columnas.Length < 2) continue;
-
-                RegistroTiempo registro = new RegistroTiempo
-                {
-                    nombre = columnas[0].Trim().Replace("\uFEFF", ""),
-                    fecha = columnas[1]
-                };
-
-                // Procesar los tiempos de cada nivel
-                for (int i = 2; i < columnas.Length && i < headers.Length; i++)
-                {
-                    if (float.TryParse(columnas[i], out float tiempo) && tiempo > 0)
-                    {
-                        registro.tiempos[headers[i]] = tiempo;
-                    }
-                }
-
-                todosLosTiempos.Add(registro);
-            }
+            var contenido = sr.ReadToEnd();
+            lineas = contenido.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
         }
+
+        if (lineas.Length < 2) return;
+
+        string[] headers = lineas[0].Split(',');
+
+        for (int i = 1; i < lineas.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(lineas[i])) continue;
+
+            string[] columnas = lineas[i].Split(',');
+            if (columnas.Length < 2) continue;
+
+            RegistroTiempo reg = new RegistroTiempo
+            {
+                nombre = columnas[0].Trim().Replace("\uFEFF", ""),
+                fecha = columnas[1]
+            };
+
+            for (int j = 2; j < columnas.Length && j < headers.Length; j++)
+            {
+                if (float.TryParse(columnas[j], out float tiempo) && tiempo > 0)
+                    reg.tiempos[headers[j]] = tiempo;
+            }
+
+            todosLosTiempos.Add(reg);
+            todosLosNombres.Add(reg.nombre);
+        }
+
+        todosLosNombres = todosLosNombres.Distinct().OrderBy(n => n).ToList();
     }
 
-    void MostrarNombresUnicos()
+    void InicializarDropdownNombres()
     {
-        // Limpiar solo los hijos del Content, no el Content mismo
-        for (int i = contentNombres.childCount - 1; i >= 0; i--)
+        dropdownNombre.ClearOptions();
+        if (todosLosNombres.Count == 0)
+            dropdownNombre.AddOptions(new List<string> { "Sin registro" });
+        else
+            dropdownNombre.AddOptions(todosLosNombres);
+
+        ActualizarFechasPorNombre();
+    }
+
+    void ActualizarFechasPorNombre()
+    {
+        dropdownFechaInicio.ClearOptions();
+        dropdownFechaFin.ClearOptions();
+
+        if (dropdownNombre.options.Count == 0 || dropdownNombre.options[dropdownNombre.value].text == "Sin registro")
         {
-            Destroy(contentNombres.GetChild(i).gameObject);
+            dropdownFechaInicio.AddOptions(new List<string> { "Sin registro" });
+            dropdownFechaFin.AddOptions(new List<string> { "Sin registro" });
+            return;
         }
 
-        var nombresUnicos = todasLasPartidas
-            .Select(p => p.nombre.Trim().Replace("\uFEFF", ""))
+        string nombreSeleccionado = dropdownNombre.options[dropdownNombre.value].text;
+
+        List<string> fechasFiltradas = todosLosTiempos
+            .Where(r => r.nombre == nombreSeleccionado)
+            .Select(r => r.fecha)
             .Distinct()
-            .OrderBy(n => n);
+            .OrderBy(f => DateTime.Parse(f))
+            .ToList();
 
-        if (!nombresUnicos.Any())
+        if (fechasFiltradas.Count == 0)
         {
-            // No hay partidas, mostrar mensaje durante 3 segundos
-            if (mensajeNoPartidasPrefab != null)
-            {
-                StartCoroutine(MostrarMensajeTemporal(mensajeNoPartidasPrefab, 3f));
-            }
+            dropdownFechaInicio.AddOptions(new List<string> { "Sin registro" });
+            dropdownFechaFin.AddOptions(new List<string> { "Sin registro" });
             return;
         }
 
-        foreach (string nombre in nombresUnicos)
-        {
-            string nombreCapturado = nombre;
-            GameObject boton = Instantiate(botonNombrePrefab, contentNombres);
-            boton.GetComponentInChildren<TextMeshProUGUI>().text = nombreCapturado;
-            boton.GetComponent<Button>().onClick.RemoveAllListeners();
-            boton.GetComponent<Button>().onClick.AddListener(() =>
-            {
-                MostrarDetallesDe(nombreCapturado);
-            });
-        }
+        dropdownFechaInicio.AddOptions(fechasFiltradas);
+        dropdownFechaFin.AddOptions(fechasFiltradas);
+
+        dropdownFechaInicio.value = 0;
+        dropdownFechaFin.value = fechasFiltradas.Count - 1;
     }
 
-    private IEnumerator MostrarMensajeTemporal(GameObject prefab, float duracion)
+    void InicializarDropdownFases()
     {
-        GameObject mensaje = Instantiate(prefab, panelPartidas.transform); // se instancia como hijo del panel
-        mensaje.SetActive(true);
-        yield return new WaitForSeconds(duracion);
-        Destroy(mensaje);
+        dropdownFase.ClearOptions();
+        dropdownFase.AddOptions(new List<string> { "Fase 1", "Fase 2", "Fase 3" });
     }
 
-
-    void MostrarDetallesDe(string nombre)
+    void EjecutarBusqueda()
     {
-        // Limpiar solo los hijos del Content, no el Content mismo
-        for (int i = contentDetalles.childCount - 1; i >= 0; i--)
-        {
-            Destroy(contentDetalles.GetChild(i).gameObject);
-        }
+        string nombreSeleccionado = dropdownNombre.options[dropdownNombre.value].text;
+        string fechaInicioStr = dropdownFechaInicio.options[dropdownFechaInicio.value].text;
+        string fechaFinStr = dropdownFechaFin.options[dropdownFechaFin.value].text;
+        int faseSeleccionada = dropdownFase.value + 1;
 
-        var partidasJugador = todasLasPartidas
-            .Where(p => p.nombre.Trim().Replace("\uFEFF", "") == nombre.Trim().Replace("\uFEFF", ""))
-            .OrderByDescending(p => p.fecha);
-
-        foreach (var p in partidasJugador)
+        // Si no hay registros
+        if (nombreSeleccionado == "Sin registro" || fechaInicioStr == "Sin registro" || fechaFinStr == "Sin registro")
         {
-            GameObject fila = Instantiate(filaDetallePrefab, contentDetalles);
-            fila.GetComponentInChildren<TextMeshProUGUI>().text = $"Fecha: {p.fecha} | Fases: {p.fases} | Niveles: {p.niveles}";
-            
-            // Convertir la fila en botón
-            Button botonFila = fila.GetComponent<Button>();
-            if (botonFila == null)
-                botonFila = fila.AddComponent<Button>();
-            
-            // Capturar variables para el closure
-            string fechaCapturada = p.fecha;
-            string nombreCapturado = p.nombre;
-            
-            botonFila.onClick.RemoveAllListeners();
-            botonFila.onClick.AddListener(() =>
-            {
-                MostrarPanelTiempos(nombreCapturado, fechaCapturada);
-            });
-        }
-    }
-    
-    void MostrarPanelTiempos(string nombre, string fecha)
-    {
-        // Buscar el registro de tiempos correspondiente
-        registroSeleccionado = todosLosTiempos
-            .FirstOrDefault(r => r.nombre.Trim().Replace("\uFEFF", "") == nombre.Trim().Replace("\uFEFF", "") 
-                               && r.fecha == fecha);
-        
-        if (registroSeleccionado == null)
-        {
-            Debug.LogWarning($"No se encontró registro de tiempos para {nombre} en fecha {fecha}");
-            
-            // Mostrar mensaje temporal de "no se encontró registro de tiempos"
-            if (mensajeNoPartidasPrefab != null)
-            {
-                StartCoroutine(MostrarMensajeTemporal(mensajeNoPartidasPrefab, 3f));
-            }
+            MostrarPrefabSinRegistro();
             return;
         }
-        
-        // Cambiar a panel de tiempos
-        MostrarPanelNivelesTiempo();
-        MostrarFases();
-        MostrarNivelesDeFase(1); // Mostrar fase 1 por defecto
-    }
-    
-    void MostrarFases()
-    {
-        foreach (Transform hijo in contentFases)
-            Destroy(hijo.gameObject);
-        
-        // Siempre mostrar las 3 fases
-        for (int fase = 1; fase <= 3; fase++)
+
+        DateTime.TryParse(fechaInicioStr, out DateTime fechaInicio);
+        DateTime.TryParse(fechaFinStr, out DateTime fechaFin);
+
+        var filtrados = todosLosTiempos.Where(r =>
         {
-            int faseCapturada = fase;
-            
-            GameObject botonFase = Instantiate(botonFasePrefab, contentFases);
-            botonFase.GetComponentInChildren<TextMeshProUGUI>().text = $"Fase {fase}";
-            
-            Button btn = botonFase.GetComponent<Button>();
-            if (btn == null)
-                btn = botonFase.AddComponent<Button>();
-                
-            btn.onClick.RemoveAllListeners();
-            btn.onClick.AddListener(() =>
+            if (r.nombre != nombreSeleccionado) return false;
+
+            if (DateTime.TryParse(r.fecha, out DateTime f))
             {
-                MostrarNivelesDeFase(faseCapturada);
-            });
-        }
-    }
-    
-    void MostrarNivelesDeFase(int fase)
-    {
-        foreach (Transform hijo in contentNiveles)
-            Destroy(hijo.gameObject);
-        
-        if (registroSeleccionado == null) return;
-        
-        // Mostrar niveles del 1 al 10 para la fase seleccionada
-        for (int nivel = 1; nivel <= 10; nivel++)
-        {
-            string claveNivel = $"nivel{nivel}F{fase}";
-            
-            GameObject filaNivel = Instantiate(filaNivelPrefab, contentNiveles);
-            TextMeshProUGUI textoNivel = filaNivel.GetComponentInChildren<TextMeshProUGUI>();
-            
-            if (registroSeleccionado.tiempos.ContainsKey(claveNivel))
-            {
-                float tiempo = registroSeleccionado.tiempos[claveNivel];
-                textoNivel.text = $"Nivel {nivel} | Tiempo: {tiempo:F2}s";
+                if (fechaInicio != DateTime.MinValue && f < fechaInicio) return false;
+                if (fechaFin != DateTime.MinValue && f > fechaFin) return false;
             }
+
+            return true;
+        }).OrderBy(r => r.fecha).ToList();
+
+        if (filtrados.Count == 0)
+        {
+            MostrarPrefabSinRegistro();
+            return;
+        }
+
+        ConstruirTabla(filtrados, faseSeleccionada);
+    }
+
+    void ConstruirTabla(List<RegistroTiempo> registros, int fase)
+    {
+        foreach (Transform hijo in tablaContenido) Destroy(hijo.gameObject);
+
+        foreach (var reg in registros)
+        {
+            GameObject fila = Instantiate(filaPrefab, tablaContenido);
+            var txt = fila.GetComponentInChildren<TextMeshProUGUI>();
+
+            string linea;
+
+            if (DateTime.TryParse(reg.fecha, out DateTime fechaParsed))
+                linea = $"Fecha: {fechaParsed:yyyy-MM-dd} | ";
             else
+                linea = $"Fecha: {reg.fecha} | ";
+
+            for (int n = 1; n <= 10; n++)
             {
-                textoNivel.text = $"Nivel {nivel} | Tiempo: --";
+                string clave = $"nivel{n}F{fase}";
+                string valor = reg.tiempos.ContainsKey(clave) ? $"{reg.tiempos[clave]:F2}" : "0.00";
+                linea += $"N{n}: {valor} | ";
             }
+
+            if (linea.EndsWith(" | "))
+                linea = linea.Substring(0, linea.Length - 3);
+
+            txt.text = linea;
         }
     }
-    
-    void ConfigurarBotonVolver()
+
+   void MostrarPrefabSinRegistro()
     {
-        if (botonVolver != null)
+        // Instancia el prefab sobresaliendo sobre el canvas principal
+        if (prefabSinRegistro != null)
         {
-            botonVolver.onClick.RemoveAllListeners();
-            botonVolver.onClick.AddListener(MostrarPanelPartidas);
+            GameObject instanciado = Instantiate(prefabSinRegistro, spawnPrefabSinRegistro.position, Quaternion.identity, panelBusqueda.transform);
+            StartCoroutine(DesaparecerPrefab(instanciado, 3f));
         }
     }
-    
-    void MostrarPanelPartidas()
+    private System.Collections.IEnumerator DesaparecerPrefab(GameObject obj, float segundos)
     {
-        panelPartidas.SetActive(true);
-        panelNivelesTiempo.SetActive(false);
+        yield return new WaitForSeconds(segundos);
+        if (obj != null)
+            Destroy(obj);
     }
-    
-    void MostrarPanelNivelesTiempo()
+
+    void MostrarPanelBusqueda()
     {
-        panelPartidas.SetActive(false);
-        panelNivelesTiempo.SetActive(true);
+        panelBusqueda.SetActive(true);
+        panelResultados.SetActive(false);
+    }
+
+    void MostrarPanelResultados()
+    {
+        panelBusqueda.SetActive(false);
+        panelResultados.SetActive(true);
+    }
+
+    void VolverPanelBusqueda()
+    {
+        panelBusqueda.SetActive(true);
+        panelResultados.SetActive(false);
     }
 }

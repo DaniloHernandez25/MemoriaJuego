@@ -20,6 +20,7 @@ public class VerificarResta : MonoBehaviour
     public GameObject perfectoPrefab;          
     public GameObject intentaDeNuevoPrefab;
     public static event System.Action OnNivelCompletado;
+
     [Header("Configuración de Escena")]
     public int indiceEscenaAlGanar = -1;  
 
@@ -88,22 +89,19 @@ public class VerificarResta : MonoBehaviour
                 Instantiate(ganastePrefab, canvas.transform, false);
                 Debug.Log("🎉 ¡Ganaste!");
 
-                OnNivelCompletado?.Invoke();  // 👈 Notifica al NivelTimer
+                OnNivelCompletado?.Invoke();  
                 StartCoroutine(GuardarProgresoEnCSV());
 
-                // 👇 Corutina inline usando enumerador anónimo
                 StartCoroutine(EsperarYCargar());
 
                 System.Collections.IEnumerator EsperarYCargar()
                 {
                     yield return new WaitForSeconds(2f);
-                    UnityEngine.SceneManagement.SceneManager.LoadScene(indiceEscenaAlGanar);
+                    SceneManager.LoadScene(indiceEscenaAlGanar);
                 }
             }
-
             else
             {
-                // Mostrar Perfecto solo si no ganó
                 StartCoroutine(MostrarMensajePerfecto());
                 GenerarNuevoEjercicio();
             }
@@ -125,7 +123,6 @@ public class VerificarResta : MonoBehaviour
         Destroy(mensajePerfecto);
     }
 
-
     private IEnumerator MostrarIntentoFallido()
     {
         Canvas canvas = FindFirstObjectByType<Canvas>();
@@ -141,7 +138,6 @@ public class VerificarResta : MonoBehaviour
         if (aciertosText != null)
             aciertosText.text = "Aciertos: " + aciertos;
     }
-
 
     private IEnumerator GuardarProgresoEnCSV()
     {
@@ -227,5 +223,11 @@ public class VerificarResta : MonoBehaviour
         }
 
         yield return null;
+    }
+
+    // 👇 ESTE ES EL GETTER QUE FALTABA
+    public int GetNumeroSpawn()
+    {
+        return numeroSpawn;
     }
 }
