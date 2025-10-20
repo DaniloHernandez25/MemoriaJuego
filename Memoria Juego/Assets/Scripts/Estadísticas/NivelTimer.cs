@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections;
 using System.Globalization;
 using System.Collections.Generic;
+using System;
 
 public class NivelTimer : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class NivelTimer : MonoBehaviour
         tiempoInicio = Time.time;
         filePath = Path.Combine(Application.persistentDataPath, "progreso_tiempos.csv");
 
-        // Suscribirse al evento del CardsController
+        // Suscribirse a los eventos de finalización de nivel
         CardsController.OnNivelCompletado += RegistrarTiempo;
         CardsControllerHard.OnNivelCompletado += RegistrarTiempo;
         VerificarSuma.OnNivelCompletado += RegistrarTiempo;
@@ -47,11 +48,12 @@ public class NivelTimer : MonoBehaviour
 
         float tiempoTranscurridoSegundos = Time.time - tiempoInicio;
 
-        // Convertir a minutos
-        float tiempoTranscurridoMinutos = tiempoTranscurridoSegundos / 60f;
+        // Convertir a hh:mm:ss
+        TimeSpan tiempo = TimeSpan.FromSeconds(tiempoTranscurridoSegundos);
+        string tiempoFormateado = tiempo.ToString(@"hh\:mm\:ss");
 
         string nombre = PlayerPrefs.GetString("nombreJugador", "Jugador");
-        string fecha = PlayerPrefs.GetString("fechaSeleccionada", System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+        string fecha = PlayerPrefs.GetString("fechaSeleccionada", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
         // Crear CSV si no existe
         if (!File.Exists(filePath))
@@ -90,17 +92,17 @@ public class NivelTimer : MonoBehaviour
             filaIndex = lineasList.Count - 1;
         }
 
-        // Actualizar la columna correspondiente con minutos
+        // Actualizar la columna correspondiente con hh:mm:ss
         string[] fila = lineasList[filaIndex].Split(',');
         int columna = 2 + (numeroFase - 1) * 10 + (numeroNivel - 1);
-        fila[columna] = tiempoTranscurridoMinutos.ToString("F2", CultureInfo.InvariantCulture);
+        fila[columna] = tiempoFormateado;
 
         lineasList[filaIndex] = string.Join(",", fila);
 
         try
         {
             File.WriteAllLines(filePath, lineasList);
-            Debug.Log($"Tiempo registrado en {fila[columna]} minutos para {nombre} - {fecha}");
+            Debug.Log($"Tiempo registrado en {tiempoFormateado} para {nombre} - {fecha}");
         }
         catch (System.Exception e)
         {

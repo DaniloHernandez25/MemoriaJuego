@@ -38,7 +38,8 @@ public class GestorPartidasFiltro : MonoBehaviour
     {
         public string nombre;
         public string fecha;
-        public Dictionary<string, float> tiempos = new Dictionary<string, float>();
+        public Dictionary<string, string> tiempos = new Dictionary<string, string>();
+
     }
 
     void Start()
@@ -93,9 +94,15 @@ public class GestorPartidasFiltro : MonoBehaviour
 
             for (int j = 2; j < columnas.Length && j < headers.Length; j++)
             {
-                if (float.TryParse(columnas[j], out float tiempo) && tiempo > 0)
-                    reg.tiempos[headers[j]] = tiempo;
+                string valor = columnas[j].Trim();
+                if (!string.IsNullOrEmpty(valor))
+                {
+                    // Si es formato hh:mm:ss lo guardamos directo
+                    if (valor.Contains(":"))
+                        reg.tiempos[headers[j]] = valor;
+                }
             }
+
 
             todosLosTiempos.Add(reg);
             todosLosNombres.Add(reg.nombre);
@@ -193,6 +200,7 @@ public class GestorPartidasFiltro : MonoBehaviour
         }
 
         ConstruirTabla(filtrados, faseSeleccionada);
+        MostrarPanelResultados();
     }
 
     void ConstruirTabla(List<RegistroTiempo> registros, int fase)
@@ -214,9 +222,10 @@ public class GestorPartidasFiltro : MonoBehaviour
             for (int n = 1; n <= 10; n++)
             {
                 string clave = $"nivel{n}F{fase}";
-                string valor = reg.tiempos.ContainsKey(clave) ? $"{reg.tiempos[clave]:F2}" : "0.00";
+                string valor = reg.tiempos.ContainsKey(clave) ? reg.tiempos[clave] : "00:00:00";
                 linea += $"N{n}: {valor} | ";
             }
+
 
             if (linea.EndsWith(" | "))
                 linea = linea.Substring(0, linea.Length - 3);
