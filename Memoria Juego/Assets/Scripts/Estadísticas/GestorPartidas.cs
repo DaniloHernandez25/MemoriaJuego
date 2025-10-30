@@ -17,8 +17,8 @@ public class GestorPartidasFiltro : MonoBehaviour
 
     [Header("UI Búsqueda")]
     public TMP_Dropdown dropdownNombre;
-    public TMP_Dropdown dropdownFechaInicio;
-    public TMP_Dropdown dropdownFechaFin;
+    public TMP_InputField inputFechaInicio;
+    public TMP_InputField inputFechaFin;
     public TMP_Dropdown dropdownFase;
     public Button botonBuscar;
 
@@ -28,7 +28,7 @@ public class GestorPartidasFiltro : MonoBehaviour
 
     [Header("UI Resultados")]
     public GameObject prefabSinRegistro;
-    public Transform spawnPrefabSinRegistro; // Lugar donde se instanciará sobresaliendo
+    public Transform spawnPrefabSinRegistro;
 
     private List<RegistroTiempo> todosLosTiempos = new List<RegistroTiempo>();
     private List<string> todosLosNombres = new List<string>();
@@ -39,7 +39,6 @@ public class GestorPartidasFiltro : MonoBehaviour
         public string nombre;
         public string fecha;
         public Dictionary<string, string> tiempos = new Dictionary<string, string>();
-
     }
 
     void Start()
@@ -48,7 +47,7 @@ public class GestorPartidasFiltro : MonoBehaviour
         InicializarDropdownNombres();
         InicializarDropdownFases();
 
-        dropdownNombre.onValueChanged.AddListener(delegate { ActualizarFechasPorNombre(); });
+        dropdownNombre.onValueChanged.AddListener(delegate { /* no necesario actualizar fechas */ });
 
         if (botonBuscar != null)
             botonBuscar.onClick.AddListener(EjecutarBusqueda);
@@ -89,7 +88,7 @@ public class GestorPartidasFiltro : MonoBehaviour
             RegistroTiempo reg = new RegistroTiempo
             {
                 nombre = columnas[0].Trim().Replace("\uFEFF", ""),
-                fecha = columnas[1]
+                fecha = columnas[1].Trim()
             };
 
             for (int j = 2; j < columnas.Length && j < headers.Length; j++)
@@ -97,12 +96,10 @@ public class GestorPartidasFiltro : MonoBehaviour
                 string valor = columnas[j].Trim();
                 if (!string.IsNullOrEmpty(valor))
                 {
-                    // Si es formato hh:mm:ss lo guardamos directo
-                    if (valor.Contains(":"))
+                    if (valor.Contains(":")) // formato hh:mm:ss
                         reg.tiempos[headers[j]] = valor;
                 }
             }
-
 
             todosLosTiempos.Add(reg);
             todosLosNombres.Add(reg.nombre);
@@ -118,43 +115,6 @@ public class GestorPartidasFiltro : MonoBehaviour
             dropdownNombre.AddOptions(new List<string> { "Sin registro" });
         else
             dropdownNombre.AddOptions(todosLosNombres);
-
-        ActualizarFechasPorNombre();
-    }
-
-    void ActualizarFechasPorNombre()
-    {
-        dropdownFechaInicio.ClearOptions();
-        dropdownFechaFin.ClearOptions();
-
-        if (dropdownNombre.options.Count == 0 || dropdownNombre.options[dropdownNombre.value].text == "Sin registro")
-        {
-            dropdownFechaInicio.AddOptions(new List<string> { "Sin registro" });
-            dropdownFechaFin.AddOptions(new List<string> { "Sin registro" });
-            return;
-        }
-
-        string nombreSeleccionado = dropdownNombre.options[dropdownNombre.value].text;
-
-        List<string> fechasFiltradas = todosLosTiempos
-            .Where(r => r.nombre == nombreSeleccionado)
-            .Select(r => r.fecha)
-            .Distinct()
-            .OrderBy(f => DateTime.Parse(f))
-            .ToList();
-
-        if (fechasFiltradas.Count == 0)
-        {
-            dropdownFechaInicio.AddOptions(new List<string> { "Sin registro" });
-            dropdownFechaFin.AddOptions(new List<string> { "Sin registro" });
-            return;
-        }
-
-        dropdownFechaInicio.AddOptions(fechasFiltradas);
-        dropdownFechaFin.AddOptions(fechasFiltradas);
-
-        dropdownFechaInicio.value = 0;
-        dropdownFechaFin.value = fechasFiltradas.Count - 1;
     }
 
     void InicializarDropdownFases()
@@ -166,32 +126,39 @@ public class GestorPartidasFiltro : MonoBehaviour
     void EjecutarBusqueda()
     {
         string nombreSeleccionado = dropdownNombre.options[dropdownNombre.value].text;
-        string fechaInicioStr = dropdownFechaInicio.options[dropdownFechaInicio.value].text;
-        string fechaFinStr = dropdownFechaFin.options[dropdownFechaFin.value].text;
+        string fechaInicioStr = inputFechaInicio.text.Trim();
+        string fechaFinStr = inputFechaFin.text.Trim();
         int faseSeleccionada = dropdownFase.value + 1;
 
-        // Si no hay registros
-        if (nombreSeleccionado == "Sin registro" || fechaInicioStr == "Sin registro" || fechaFinStr == "Sin registro")
+        if (nombreSeleccionado == "Sin registro" || string.IsNullOrEmpty(fechaInicioStr) || string.IsNullOrEmpty(fechaFinStr))
         {
             MostrarPrefabSinRegistro();
             return;
         }
 
-        DateTime.TryParse(fechaInicioStr, out DateTime fechaInicio);
-        DateTime.TryParse(fechaFinStr, out DateTime fechaFin);
-
-        var filtrados = todosLosTiempos.Where(r =>
+        // Intentar parsear las fechas de entrada
+        if (!DateTime.TryParse(fechaInicioStr, out DateTime fechaInicio) ||
+            !DateTime.TryParse(fechaFinStr, out DateTime fechaFin))
         {
-            if (r.nombre != nombreSeleccionado) return false;
+            Debug.LogWarning("Formato de fecha inválido. Usa el formato YYYY-MM-DD");
+            MostrarPrefabSinRegistro();
+            return;
+        }
 
-            if (DateTime.TryParse(r.fecha, out DateTime f))
+        // Filtrado ignorando horas
+        var filtrados = todosLosTiempos
+            .Where(r => r.nombre == nombreSeleccionado)
+            .Where(r =>
             {
-                if (fechaInicio != DateTime.MinValue && f < fechaInicio) return false;
-                if (fechaFin != DateTime.MinValue && f > fechaFin) return false;
-            }
-
-            return true;
-        }).OrderBy(r => r.fecha).ToList();
+                if (DateTime.TryParse(r.fecha, out DateTime f))
+                {
+                    DateTime soloFecha = f.Date; // Ignora la hora
+                    return soloFecha >= fechaInicio.Date && soloFecha <= fechaFin.Date;
+                }
+                return false;
+            })
+            .OrderBy(r => r.fecha)
+            .ToList();
 
         if (filtrados.Count == 0)
         {
@@ -215,17 +182,17 @@ public class GestorPartidasFiltro : MonoBehaviour
             string linea;
 
             if (DateTime.TryParse(reg.fecha, out DateTime fechaParsed))
-                linea = $"Fecha: {fechaParsed:yyyy-MM-dd} | ";
+                linea = $"Fecha: {fechaParsed:yyyy-MM-dd HH:mm:ss} | ";
             else
                 linea = $"Fecha: {reg.fecha} | ";
 
+            // Mostrar todos los niveles de esa fase
             for (int n = 1; n <= 10; n++)
             {
                 string clave = $"nivel{n}F{fase}";
-                string valor = reg.tiempos.ContainsKey(clave) ? reg.tiempos[clave] : "00:00:00";
+                string valor = reg.tiempos.ContainsKey(clave) ? reg.tiempos[clave] : "--:--:--";
                 linea += $"N{n}: {valor} | ";
             }
-
 
             if (linea.EndsWith(" | "))
                 linea = linea.Substring(0, linea.Length - 3);
@@ -234,15 +201,15 @@ public class GestorPartidasFiltro : MonoBehaviour
         }
     }
 
-   void MostrarPrefabSinRegistro()
+    void MostrarPrefabSinRegistro()
     {
-        // Instancia el prefab sobresaliendo sobre el canvas principal
         if (prefabSinRegistro != null)
         {
             GameObject instanciado = Instantiate(prefabSinRegistro, spawnPrefabSinRegistro.position, Quaternion.identity, panelBusqueda.transform);
             StartCoroutine(DesaparecerPrefab(instanciado, 3f));
         }
     }
+
     private System.Collections.IEnumerator DesaparecerPrefab(GameObject obj, float segundos)
     {
         yield return new WaitForSeconds(segundos);
